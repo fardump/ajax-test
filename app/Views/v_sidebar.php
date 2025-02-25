@@ -1,173 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script
-      src="https://kit.fontawesome.com/ae360af17e.js"
-      crossorigin="anonymous"></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
-      crossorigin="anonymous" />
-    <link rel="stylesheet" href="public/css/style.css" />
-    <title>Sidebar With Bootstrap</title>
-  </head>
 
-  <body>
-    <div class="wrapper">
-      <!-- Sidebar -->
-      <aside id="sidebar">
-        <div class="h-100">
-          <div class="sidebar-logo">
-            <a href="#">CodzSword</a>
-          </div>
-          <!-- Sidebar Navigation -->
-          <ul class="sidebar-nav">
-            <li class="sidebar-header">Tools & Components</li>
-            <li class="sidebar-item">
-              <a href="#" class="sidebar-link">
-                <i class="fa-solid fa-list pe-2"></i>
-                Profile
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a
-                href="#"
-                class="sidebar-link collapsed"
-                data-bs-toggle="collapse"
-                data-bs-target="#pages"
-                aria-expanded="false"
-                aria-controls="pages">
-                <i class="fa-regular fa-file-lines pe-2"></i>
-                Pages
-              </a>
-              <ul
-                id="pages"
-                class="sidebar-dropdown list-unstyled collapse"
-                data-bs-parent="#sidebar">
-                <li class="sidebar-item">
-                  <a href="#" class="sidebar-link">Analytics</a>
-                </li>
-                <li class="sidebar-item">
-                  <a href="#" class="sidebar-link">Ecommerce</a>
-                </li>
-                <li class="sidebar-item">
-                  <a href="#" class="sidebar-link">Crypto</a>
-                </li>
-              </ul>
-            </li>
-            <li class="sidebar-item">
-              <a
-                href="#"
-                class="sidebar-link collapsed"
-                data-bs-toggle="collapse"
-                data-bs-target="#dashboard"
-                aria-expanded="false"
-                aria-controls="dashboard">
-                <i class="fa-solid fa-sliders pe-2"></i>
-                Dashboard
-              </a>
-              <ul
-                id="dashboard"
-                class="sidebar-dropdown list-unstyled collapse"
-                data-bs-parent="#sidebar">
-                <li class="sidebar-item">
-                  <a href="#" class="sidebar-link">Dashboard Analytics</a>
-                </li>
-                <li class="sidebar-item">
-                  <a href="#" class="sidebar-link">Dashboard Ecommerce</a>
-                </li>
-              </ul>
-            </li>
-            <li class="sidebar-item">
-              <a
-                href="#"
-                class="sidebar-link collapsed"
-                data-bs-toggle="collapse"
-                data-bs-target="#auth"
-                aria-expanded="false"
-                aria-controls="auth">
-                <i class="fa-regular fa-user pe-2"></i>
-                Auth
-              </a>
-              <ul
-                id="auth"
-                class="sidebar-dropdown list-unstyled collapse"
-                data-bs-parent="#sidebar">
-                <li class="sidebar-item">
-                  <a href="#" class="sidebar-link">Login</a>
-                </li>
-                <li class="sidebar-item">
-                  <a href="#" class="sidebar-link">Register</a>
-                </li>
-              </ul>
-            </li>
-            <li class="sidebar-header">Multi Level Nav</li>
-            <li class="sidebar-item">
-              <a
-                href="#"
-                class="sidebar-link collapsed"
-                data-bs-toggle="collapse"
-                data-bs-target="#multi"
-                aria-expanded="false"
-                aria-controls="multi">
-                <i class="fa-solid fa-share-nodes pe-2"></i>
-                Multi Level
-              </a>
-              <ul
-                id="multi"
-                class="sidebar-dropdown list-unstyled collapse"
-                data-bs-parent="#sidebar">
-                <li class="sidebar-item">
-                  <a
-                    href="#"
-                    class="sidebar-link collapsed"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#multi-two"
-                    aria-expanded="false"
-                    aria-controls="multi-two">
-                    Two Links
-                  </a>
-                  <ul
-                    id="multi-two"
-                    class="sidebar-dropdown list-unstyled collapse">
-                    <li class="sidebar-item">
-                      <a href="#" class="sidebar-link">Link 1</a>
-                    </li>
-                    <li class="sidebar-item">
-                      <a href="#" class="sidebar-link">Link 2</a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ul>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIl14JGDhS7nauLaF1F1TkH8pqiv/aW25307StakicSUAzYyR15A6PsrvE8BI1tVPSXn5z" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+    crossorigin="anonymous" />
+  <link rel="stylesheet" href="public/css/style.css" />
+  <title>Sidebar With Bootstrap</title>
+</head>
+
+<body>
+  <div class="wrapper">
+    <!-- Sidebar -->
+    <aside id="sidebar">
+      <div class="h-100">
+        <div class="sidebar-logo">
+          <a href="#">CodzSword</a>
         </div>
-      </aside>
-      <!-- Main Component -->
-      <div class="main">
-        <nav class="navbar navbar-expand px-3 border-bottom">
-          <!-- Button for sidebar toggle -->
-          <button class="btn" type="button" data-bs-theme="dark">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        </nav>
-        <?= $this->renderSection('content') ?>
+        <!-- Sidebar Navigation -->
+        <ul class="sidebar-nav">
+          <li class="sidebar-header d-flex justify-content-center">Master...</li>
+          <li class="sidebar-item">
+            <a href='<?= getURL('user') ?>' class="sidebar-link">
+              <i class="fa-solid fa-list pe-2"></i>
+              Master User
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href='<?= getURL('city') ?>' class="sidebar-link">
+              <i class="fa-solid fa-list pe-2"></i>
+              Master City
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href='<?= getURL('ekspedition') ?>' class="sidebar-link">
+              <i class="fa-solid fa-list pe-2"></i>
+              Master Ekspedition
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href='<?= getURL('province') ?>' class="sidebar-link">
+              <i class="fa-solid fa-list pe-2"></i>
+              Master Province
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href='<?= getURL('category') ?>' class="sidebar-link">
+              <i class="fa-solid fa-list pe-2"></i>
+              Master Category
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a href='<?= getURL('type') ?>' class="sidebar-link">
+              <i class="fa-solid fa-list pe-2"></i>
+              Master Type
+            </a>
+          </li>
+        </ul>
       </div>
+    </aside>
+    <!-- Main Component -->
+    <div class="main">
+      <nav class="navbar navbar-expand px-3 border-bottom">
+        <!-- Button for sidebar toggle -->
+        <button class="btn" type="button" data-bs-theme="dark">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </nav>
+      <?= $this->renderSection('content') ?>
     </div>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-      crossorigin="anonymous"></script>
-    <script src="script.js"></script>
-    <script>
-        const toggler = document.querySelector(".btn");
-toggler.addEventListener("click",function(){
-    document.querySelector("#sidebar").classList.toggle("collapsed");
-});
-    </script>
-  </body>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script>
+    const toggler = document.querySelector(".btn");
+    toggler.addEventListener("click", function() {
+      document.querySelector("#sidebar").classList.toggle("collapsed");
+    });
+  </script>
+</body>
+
 </html>
