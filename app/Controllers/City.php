@@ -45,7 +45,7 @@ class City extends BaseController
             ];
             $this->cityModel->store($data);
             $this->db->transCommit();
-            return $this->response->setJSON(['pesan' => 'Data has been saved successfully', 'sukses' => 1]);
+            return $this->response->setJSON(['pesan' => 'Data has been saved successfully', 'sukses' => 1, 'Data' => $data]);
         }catch(Exception $e){
             return $this->response->setJSON(['error' => $e->getMessage(), 'sukses' => 0]);
         }
@@ -66,7 +66,7 @@ class City extends BaseController
             ];
             $this->cityModel->edit($data, $cityid);
             $this->db->transCommit();
-            return $this->response->setJSON(['pesan' => 'Data has been saved successfully', 'sukses' => 1]);
+            return $this->response->setJSON(['pesan' => 'Data has been saved successfully', 'sukses' => 1,  'Data' => $data]);
         }catch(Exception $e){
             return $this->response->setJSON(['error' => $e->getMessage(), 'sukses' => 0]);
         }

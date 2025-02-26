@@ -82,7 +82,7 @@
                         tbody.empty();
 
                         response.data.forEach(function(city, no) {
-                            let isChecked = city.isactive ? 'checked' : '';
+                            let isChecked = city.isactive == 1 ? 'checked' : '';
                             let row = `
                                     <tr>
                                         <td class="text-center">${no + 1}</td>
@@ -111,7 +111,7 @@
             $('#table-city').on('change', '.updateisactive', function() {
                 let cityId = $(this).data('id');
                 let isActive = $(this).is(':checked') ? 1 : 0;
-                let cityname = $(this).val();
+                let cityname = $(this).closest('tr').find('.updatecity').val();
 
                 $.ajax({
                     url: '<?= base_url('city/update') ?>/' + cityId,
@@ -154,13 +154,14 @@
             $('#table-city').on('blur', '.updatecity', function() {
                 let cityId = $(this).data('id');
                 let cityname = $(this).val();
-                let isActive = $(this).val();
+                let isActive = $(this).closest('tr').find('.updateisactive').val();
 
                 $.ajax({
                     url: '<?= base_url('city/update') ?>/' + cityId,
                     type: 'POST',
                     data: {
                         cityid: cityId,
+                        isactive: isActive,
                         cityname: cityname
                     },
                     success: function(response) {
@@ -277,6 +278,7 @@
                                 confirmButtonText: 'OK'
                             });
                         }
+                        loadTable();
                     }
                 })
                 loadTable();
