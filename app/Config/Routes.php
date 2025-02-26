@@ -12,8 +12,10 @@ $routes->group('province', function ($routes) {
 });
 $routes->group('user', function ($routes) {
     $routes->get('', 'User::index');
-    $routes->add('deleteUsers', 'User::deleteUsers');
+    $routes->add('deleteUsers/(:num)', 'User::deleteUsers/$1');
     $routes->add('add', 'User::add');
+    $routes->get('loadTable', 'User::loadTable');
+    $routes->POST('update/(:num)', 'User::edit/$1');
 });
 $routes->group('category', function ($routes) {
     $routes->get('', 'Category::index');
@@ -21,14 +23,9 @@ $routes->group('category', function ($routes) {
 $routes->group('type', function ($routes) {
     $routes->get('', 'Type::index');
 });
-<<<<<<< HEAD
 $routes->group('city', function ($routes) {
-    $routes->get('', 'City::index');
-=======
-$routes->group('city', function($routes){
     $routes->add('', 'City::index');
     $routes->Add('form', 'City::form');
->>>>>>> 9ebfd9fafbc8c939211d27d619f50ab51c04cb3a
 });
 $routes->group('ekspedition', function ($routes) {
     $routes->get('', 'Ekspedition::index');
