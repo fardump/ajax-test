@@ -35,20 +35,13 @@ $routes->group('type', function ($routes) {
     $routes->post('delete/(:any)', 'Type::delete/$1');
     $routes->post('update', 'Type::update');
 });
-<<<<<<< HEAD
-=======
-
->>>>>>> eb475ff7df5b5c9b388c9bc3850dc6d1cb710e4c
 $routes->group('city', function ($routes) {
     $routes->add('', 'City::index');
     $routes->add('getAll', 'City::getAll');
     $routes->Add('form', 'City::form');
-<<<<<<< HEAD
-=======
     $routes->Add('add', 'City::add');
     $routes->Add('delete/(:any)', 'City::delete/$1');
     $routes->Add('update/(:any)', 'City::update/$1');
->>>>>>> eb475ff7df5b5c9b388c9bc3850dc6d1cb710e4c
 });
 $routes->group('ekspedition', function ($routes) {
     $routes->get('', 'Ekspedition::index');
