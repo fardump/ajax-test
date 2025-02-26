@@ -22,10 +22,12 @@ $routes->group('user', function ($routes) {
 });
 $routes->group('category', function ($routes) {
     $routes->add('', 'Category::index');
+    $routes->add('getData', 'Category::getData');
     $routes->add('add', 'Category::add');
     $routes->add('edit/(:num)', 'Category::edit/$1');
     $routes->add('update', 'Category::update');
     $routes->add('delete', 'Category::delete');
+    $routes->add('updateCategory/(:num)', 'Category::updateCategory/$1');
 });
 $routes->group('type', function ($routes) {
     $routes->get('', 'Type::index');
