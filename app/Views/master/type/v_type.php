@@ -51,7 +51,7 @@
                 foreach ($type as $data): ?>
                     <tr>
                         <th scope="row"><?= $no++ ?></th>
-                        <td><input type="text" value="<?= $data['typename'] ?>" onblur="blurfunction()"></td>
+                        <td><input type="text" value="<?= $data['typename'] ?>" onblur="blurfunction()"></td> 
                         <td><?= $data['createddate'] ?></td>
                         <td><?= $data['updateddate'] ?></td>
                         <td><input type="checkbox" value="<?= $data['isactive'];
