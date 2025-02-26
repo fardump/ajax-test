@@ -92,7 +92,10 @@
                         <td>${ekspedition.expname}</td>
                         <td>${ekspedition.createdby}</td>
                         <td>${ekspedition.updatedby}</td>
-                        <td>${ekspedition.updateddate}</td>
+                        <td>${ekspedition.
+                        
+                        
+                        +}</td>
                         <td>${ekspedition.isactive}</td>
                         <td>
                         <button class="btn btn-warning edit-btn" data-id="${ekspedition.expid}">
