@@ -56,6 +56,26 @@ class Province extends BaseController
         }
     }
 
+    public function updatenama($id)
+    {
+        $nama = $this->request->getPost('nama');
+        $res = [];
+        try {
+            $data = [
+                'provname' => $nama
+            ];
+            $this->provinceModel->insert($res);
+            $res = [
+                'success' => true, 
+                'message' => 'Nama berhasil diubah'];
+        } catch (Exception $e) {
+            $res = [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+        echo json_encode($res);
+    }
 
     public function edit($id)
     {
