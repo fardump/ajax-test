@@ -7,9 +7,24 @@ use CodeIgniter\Model;
 class Mtype extends Model
 {
     protected $table = 'mstype';
-    protected $primaryKey = 'provid';
-    protected $allowedFields = ['provname', 'createddate', 'createdby', 'updateddate', 'updatedby', 'isactive'];
+    protected $primaryKey = 'typeid';
+    protected $allowedFields = ['typename', 'createddate', 'createdby', 'updateddate', 'updatedby', 'isactive'];
     protected $useTimestamps = false;
+
+    public function saveType($data)
+    {
+        $this->db->table($this->table)->insert($data);
+    }
+
+    public function deleteType($data)
+    {
+        $this->db->table($this->table)->where('typename', $data['typename'])->update($data);
+    }
+
+    public function updateType($data)
+    {
+        $this->db->table($this->table)->where('typename', $data['typename'])->update($data);
+    }
 }
 
 ?>
