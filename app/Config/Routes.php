@@ -20,7 +20,8 @@ $routes->group('type', function($routes){
     $routes->get('', 'Type::index');
 });
 $routes->group('city', function($routes){
-    $routes->get('', 'City::index');
+    $routes->add('', 'City::index');
+    $routes->Add('form', 'City::form');
 });
 $routes->group('ekspedition', function($routes){
     $routes->get('', 'Ekspedition::index');
