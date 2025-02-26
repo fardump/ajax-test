@@ -9,6 +9,10 @@ $routes->get('/', 'User::index');
 
 $routes->group('province', function($routes){
     $routes->get('', 'Province::index');
+    $routes->post('add', 'Province::add');
+    $routes->get('edit', 'Province::edit');
+    $routes->post('update', 'Province::update');
+    $routes->post('delete', 'Province::delete');
 });
 $routes->group('user', function($routes){
     $routes->get('', 'User::index');
