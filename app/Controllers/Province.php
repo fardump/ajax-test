@@ -72,8 +72,6 @@ class Province extends BaseController
             $data = [
                 'provname' => $nama,
                 'isactive' => $isactive,
-                'createddate' => date('Y-m-d H:i:s'),
-                'createdby' => '1',
                 'updateddate' => date('Y-m-d H:i:s'),
                 'updatedby' => '1'
             ];

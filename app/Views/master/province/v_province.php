@@ -84,7 +84,7 @@
                 <?php $no = 1;foreach($user as $data): ?>
                 <tr>
                     <th scope="row"><?= $no++ ?></th>
-                    <td><input type="text" class="form-control address-input" value="<?= $data['provname'] ?> "></td>
+                    <td><input type="text" id="updatedata" name="updatedata" class="form-control address-input" value="<?= $data['provname'] ?> "></td>
                     <td><?= $data['createddate'] ?></td>
                     <td><?= $data['updateddate'] ?></td>
                     <td><?= $data['isactive'] ?></td>
