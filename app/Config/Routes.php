@@ -6,7 +6,6 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'User::index');
-$routes->get('/', 'User::index');
 
 $routes->group('province', function ($routes) {
     $routes->get('', 'Province::index');
@@ -31,7 +30,8 @@ $routes->group('category', function ($routes) {
 $routes->group('type', function ($routes) {
     $routes->get('', 'Type::index');
     $routes->post('save', 'Type::save');
-    $routes->post('delete', 'Type::delete');
+    $routes->post('delete/(:any)', 'Type::delete/$1');
+    $routes->post('update', 'Type::update');
 });
 
 $routes->group('city', function ($routes) {
