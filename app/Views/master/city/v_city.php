@@ -46,21 +46,13 @@
                         </div>
                         <div class="from-check">
                             <input type="hidden" name="isactive" value=" ?>">
-<<<<<<< HEAD
                             <input class="form-check-input" type="checkbox" id="isactive">
-=======
-                            <input class="form-check-input" type="checkbox" id="isactive" >
->>>>>>> development
                             <label class="form-check-label fs-7" for="isactive">
                                 Is Active
                             </label>
                         </div>
                         <div class="modal-footer">
-<<<<<<< HEAD
                             <button class="btn btn-primary dflex align-center addData" id="addData" name="addData">
-=======
-                            <button type="submit" class="btn btn-primary dflex align-center">
->>>>>>> development
                                 <i class="bx bx-check margin-r-2"></i>
                                 <span class="fw-normal fs-7">Save</span>
                             </button>
@@ -73,17 +65,13 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<<<<<<< HEAD
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-=======
->>>>>>> development
     <script>
         $(document).ready(function() {
             $('#add').on('click', function() {
                 $('#cityModal').modal('show');
             });
 
-<<<<<<< HEAD
             function loadTable() {
                 $.ajax({
                     url: '<?= base_url('city/getAll') ?>',
@@ -294,10 +282,6 @@
                     }
                 })
                 loadTable();
-=======
-            $('#cityForm').on('submit', function(e) {
-                e.preventDefault();
->>>>>>> development
             });
         });
     </script>
