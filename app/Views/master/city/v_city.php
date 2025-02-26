@@ -154,7 +154,7 @@
             $('#table-city').on('blur', '.updatecity', function() {
                 let cityId = $(this).data('id');
                 let cityname = $(this).val();
-                let isActive = $(this).closest('tr').find('.updateisactive').val();
+                let isActive = $(this).closest('tr').find('.updateisactive').is(':checked') ? 1 : 0;
 
                 $.ajax({
                     url: '<?= base_url('city/update') ?>/' + cityId,
