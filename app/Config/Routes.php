@@ -21,7 +21,11 @@ $routes->group('type', function($routes){
 });
 $routes->group('city', function($routes){
     $routes->add('', 'City::index');
+    $routes->add('getAll', 'City::getAll');
     $routes->Add('form', 'City::form');
+    $routes->Add('add', 'City::add');
+    $routes->Add('delete/(:any)', 'City::delete/$1');
+    $routes->Add('update/(:any)', 'City::update/$1');
 });
 $routes->group('ekspedition', function($routes){
     $routes->get('', 'Ekspedition::index');
