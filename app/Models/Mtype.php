@@ -21,9 +21,9 @@ class Mtype extends Model
         $this->db->table($this->table)->where('typename', $data['typename'])->update($data);
     }
 
-    public function find($typeid = null)
+    public function updateType($data)
     {
-        return $this->where(['typeid' => $typeid])->first();
+        $this->db->table($this->table)->where('typename', $data['typename'])->update($data);
     }
 }
 

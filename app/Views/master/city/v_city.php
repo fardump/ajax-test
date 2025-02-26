@@ -1,6 +1,6 @@
 <?= $this->extend('v_sidebar') ?>
 <?= $this->section('content') ?>
-<h1>category</h1>
+<h1>city</h1>
 <?= $this->endSection(); ?>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

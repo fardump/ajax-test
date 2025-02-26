@@ -19,7 +19,7 @@ class Type extends BaseController
     public function index()
     {
         $data = [
-            'title' => 'Province',
+            'title' => 'Type',
             'type' => $this->typeModel->findAll()
         ];
         return view('master/type/v_type', $data);
@@ -42,31 +42,36 @@ class Type extends BaseController
             'updatedby' => '1',
         ];
         $this->typeModel->saveType($data);
-        return view('master/type/v_type', $data);
+        return redirect()->to('/type');
     }
 
     public function delete()
     {
-        $id = $this->request->getPost('typeid');
+        $typeid = $this->request->getPost('typeid');
         if (empty($typeid)) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'ID Tidak Boleh Kosong']);
         }
 
-        if ($this->typeModel->delete($typeid)) {
+        if ($this->typeModel->deleteType($typeid)) {
             return $this->response->setJSON(['status' => 'success', 'message' => 'Data Berhasil Dihapus']);
         } else {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Dihapus']);
         }
     }
 
-    public function edit($typeid)
+    public function update()
     {
-        $data = $this->typeModel->find($typeid);
-        if (empty($data)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Data Tidak Ditemukan']);
+        $id = $this->request->getPost('typeid');
+        $isactive = $this->request->getPost('isactive');
+        if (empty($typeid)) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'ID Tidak Boleh Kosong']);
         }
 
-        return $this->response->setJSON(['status' => 'success', 'data' => $data]);
+        if ($this->typeModel->updateType($typeid, ['isactive' => $isactive])) {
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Data Berhasil Diupdate']);
+        } else {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Diupdate']);
+        }
     }
 }
 
