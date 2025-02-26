@@ -18,6 +18,8 @@ $routes->group('category', function($routes){
 });
 $routes->group('type', function($routes){
     $routes->get('', 'Type::index');
+    $routes->post('save', 'Type::save');
+    $routes->post('delete', 'Type::delete');
 });
 $routes->group('city', function($routes){
     $routes->get('', 'City::index');
