@@ -1,11 +1,5 @@
 <?= $this->extend('v_sidebar') ?>
 <?= $this->section('content') ?>
-<h1>city</h1>
-<?= $this->endSection(); ?>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    //ajax disini ya ges
-</script>
 <div class="main-content">
     <section class="section">
         <div class="section-body">
@@ -53,14 +47,12 @@
                         <div class="from-check">
                             <input type="hidden" name="isactive" value=" ?>">
                             <input class="form-check-input" type="checkbox" id="isactive">
-                            <input class="form-check-input" type="checkbox" id="isactive" >
                             <label class="form-check-label fs-7" for="isactive">
                                 Is Active
                             </label>
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-primary dflex align-center addData" id="addData" name="addData">
-                            <button type="submit" class="btn btn-primary dflex align-center">
                                 <i class="bx bx-check margin-r-2"></i>
                                 <span class="fw-normal fs-7">Save</span>
                             </button>
@@ -73,7 +65,6 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
@@ -291,8 +282,6 @@
                     }
                 })
                 loadTable();
-            $('#cityForm').on('submit', function(e) {
-                e.preventDefault();
             });
         });
     </script>
