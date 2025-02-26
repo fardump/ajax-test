@@ -13,6 +13,7 @@ $routes->group('province', function ($routes) {
     $routes->get('edit', 'Province::edit');
     $routes->post('update/(:any)', 'Province::update/$1');
     $routes->post('delete/(:any)', 'Province::delete/$1');
+    $routes->get('updatenama/(:any)', 'Province::updatenama/$1');
 });
 $routes->group('user', function ($routes) {
     $routes->get('', 'User::index');
