@@ -7,7 +7,7 @@
     <div class="modal fade" id="ekspeditionModal" tabindex="-1" aria-hidden="true" aria-labelledby="ekspeditionModal">
         <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content">
-                <form action="<?= base_url(uri_string() . "/processEkspedition") ?>">
+                <form action="<?= base_url('ekspedition/add') ?>">
                     <div class="modal-header">
                         <h5 class="modal-tittle" id="ekspeditionModal" label-required>Ekspedition Form</h5>
                     </div>
@@ -24,7 +24,7 @@
                             </div>
                             <div class="form-floating mb-5 ml-2">
                                 <input type="checkbox" id="isActive" name="isActive" value="1" chekced>
-                                <span>Saya menyetujui syarat & ketentuan yang berlaku</span>
+                                <span>IsActive</span>
                             </div>
                         </div>
                     </div>
@@ -46,8 +46,8 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Nama Pemesan</th>
-                    <th>Jenis Kendaraan</th>
+                    <th>Nama Ekspedisi</th>
+                    <th>Dibuat Oleh</th>
                     <th>Created date</th>
                     <th>Updated date</th>
                     <th>Actions</th>
@@ -65,45 +65,85 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    loadTable();
+
     const openModalbtn = document.getElementById('openModalBtn');
     const modalEkspedition = new bootstrap.Modal(document.getElementById('ekspeditionModal'));
     openModalBtn.addEventListener('click', () => {
         modalEkspedition.show();
     });
 
-
     function loadTable() {
-        $(document).ready(function() {
-            $.ajax({
-                url: '<?= base_url(uri_string() . "/processUpdate") ?>',
-                method: 'GET',
-                datatype: 'json',
-                data: {
-                    orderBy: orderBy,
-                    orderDir: orderDir
-                },
-                success: function(response) {
-                    var tableBody = $('')
-                }
-            })
+        $.ajax({
+            url: '<?= base_url(uri_string() . "/processUpdate") ?>',
+            method: 'GET',
+            datatype: 'json',
+            data: {
+                orderBy: orderBy,
+                orderDir: orderDir
+            },
+            success: function(response) {
+                var tableBody = $('#tableBody');
+                tableBody.empty();
 
-        })
+                response.forEach(function(ekspedition, index) {
+                    var newRow = ` 
+                        <tr id="row-${ekspedition.expid}">
+                        <td>${ekspedition.expname}</td>
+                        <td>${ekspedition.createdby}</td>
+                        <td>${ekspedition.updatedby}</td>
+                        <td>${ekspedition.updateddate}</td>
+                        <td>${ekspedition.isactive}</td>
+                        <td>
+                        <button class="btn btn-warning edit-btn" data-id="${ekspedition.expid}">
+                            <i class="bx bx-trash"></i>
+                        </button>
+                        <button class="btn btn-danger delete-btn" data-id="${ekspedition.userid}">
+                            <i class="bx bx-trash"></i>
+                        </button>
+                        </td>
+                        </tr>
+                        `;
+                    tableBody.append(newRow);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX error:', status, error);
+            }
+        });
+    }
+
+    function deleteData() {
+
     }
 
     function addEkspediton() {
         $.ajax({
-            url : url,
+            url: url,
             method: 'post',
             data: formdata,
-            success: function(response){
-            if(response.status === 'success'){
+            success: function(response) {
+                if (response.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Data berhasil ditambahkan',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: response.message
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
                 Swal.fire({
-                    icon: 'success',
-                    title: 'Data berhasil ditambahkan',
-                    showConfirmButton: false,
-                    timer: 1500
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred: ' + error
                 });
-            }   
             }
         })
     }
