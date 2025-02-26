@@ -87,9 +87,8 @@
                     <td><input type="text" id="updatedata" name="updatedata" class="form-control address-input" value="<?= $data['provname'] ?> "></td>
                     <td><?= $data['createddate'] ?></td>
                     <td><?= $data['updateddate'] ?></td>
-                    <td><?= $data['isactive'] ?></td>
+                    <td><a onclick="formUpdate(<?= $data['provid'] ?>)" data-bs-toggle="modal" data-bs-target="#editModal"><?= $data['isactive'] ?></a></td>
                     <td>
-                        <button class="btn btn-sm btn-warning" onclick="formUpdate(<?= $data['provid'] ?>)" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
                         <button class="btn btn-sm btn-danger" type="button" onclick="hapus(<?= $data['provid'] ?>)">Delete</button>
                     </td>
                 </tr>
@@ -160,6 +159,27 @@ $(document).ready(function(){
             }
         });
     });
+
+    $('#updatedata').blur(function() {
+           $provnama = $('#updatedata').val(),
+
+        $.ajax({
+            type: 'get',
+            url: '<?= base_url('province/updatenama') ?>',
+            dataType: 'json',
+            data: formdata,
+            success: function(response) {
+                if (response.success) {
+                    alert(response.message);
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function(response) {
+                alert('Data gagal diupdate');
+            }
+        });
+    })
 })
    
 
