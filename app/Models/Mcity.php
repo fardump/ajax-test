@@ -8,8 +8,9 @@ class Mcity extends Model
 {
     protected $table = 'mscity';
     protected $primaryKey = 'cityid';
-    protected $allowedFields = ['provname', 'createddate', 'createdby', 'updateddate', 'updatedby', 'isactive'];
-    protected $useTimestamps = false;
+    protected $allowedFields = ['cityname', 'createddate', 'createdby', 'updateddate', 'updatedby', 'isactive'];
+ 
+    
 }
 
 ?>
