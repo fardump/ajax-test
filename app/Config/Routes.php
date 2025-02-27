@@ -6,15 +6,13 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'User::index');
-$routes->get('/', 'User::index');
 
 $routes->group('province', function ($routes) {
-    $routes->get('', 'Province::index');
-    $routes->post('add', 'Province::add');
-    $routes->get('edit', 'Province::edit');
-    $routes->post('update/(:any)', 'Province::update/$1');
-    $routes->post('delete/(:any)', 'Province::delete/$1');
-    $routes->get('updatenama/(:any)', 'Province::updatenama/$1');
+    $routes->add('', 'Province::index');
+    $routes->add('getdata', 'Province::getdata');
+    $routes->add('add', 'Province::add');
+    $routes->add('delete/(:any)', 'Province::delete/$1');
+    $routes->add('updateAddress/(:any)', 'Province::updateAddress/$1');
 });
 $routes->group('user', function ($routes) {
     $routes->get('', 'User::index');

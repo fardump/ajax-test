@@ -10,7 +10,6 @@
         </div>
         <!-- Sidebar Navigation -->
         <ul class="sidebar-nav">
-          <li class="sidebar-header d-flex justify-content-center">Master...</li>
           <li class="sidebar-item">
             <a href='<?= getURL('user') ?>' class="sidebar-link">
               <i class="fa-solid fa-list pe-2"></i>
@@ -68,4 +67,5 @@
       document.querySelector("#sidebar").classList.toggle("collapsed");
     });
   </script>
+  
 </body>

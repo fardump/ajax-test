@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class Mprovince extends Model
 {
-    protected $table = 'msprovince';
+    protected $table = 'msprovince as p';
     protected $primaryKey = 'provid';
     protected $allowedFields = ['provname', 'createddate', 'createdby', 'updateddate', 'updatedby', 'isactive'];
     protected $useTimestamps = false;
@@ -15,6 +15,19 @@ class Mprovince extends Model
     {
         $this->db->table($this->table)->insert($data);
     }
+
+    public function getDataAll()
+    {
+        $builder = $this->select('*');
+
+        $users = $builder->findAll();   
+
+        return $users;
+    }
+    
+    public function add($data){
+        return $this->insert($data);
+}
 
     public function getUser($id)
     {
@@ -37,6 +50,14 @@ class Mprovince extends Model
     {
         return $this->delete(['id' => $id]);
     }
+
+    public function edit($data, $id)
+    {
+        $this->builder = $this->db->table('msprovince');
+        return $this->builder->update($data, ['provid' => $id]);
+    }
+
+    
 }
 
 ?>

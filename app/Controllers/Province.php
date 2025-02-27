@@ -26,6 +26,14 @@ class Province extends BaseController
         return view('master/province/v_province', $data);
     }
 
+    public function getdata()
+    {
+        $filteredUsers = $this->provinceModel->getDataAll();
+
+        return $this->response->setJSON(['success' => 1 , 'data' => $filteredUsers]);
+    }
+
+
     public function add()
     {
 
@@ -33,11 +41,11 @@ class Province extends BaseController
         $isactive = $this->request->getPost('isactive');
 
         if (empty($nama)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Nama Tidak Boleh Kosong']);
+            return $this->response->setJSON(['success' => 'success', 'message' => 'Nama Tidak Boleh Kosong']);
         }
 
         if (empty($isactive)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Isactive Tidak Boleh Kosong']);
+            return $this->response->setJSON(['success' => 'error', 'message' => 'Isactive Tidak Boleh Kosong']);
         }
 
         $data = [
@@ -49,114 +57,73 @@ class Province extends BaseController
             'updatedby' => '1'
         ];
 
-        if ($this->provinceModel->insert($data)) {
-            return $this->response->setJSON(['status' => 'success', 'message' => 'Data Berhasil Ditambahkan']);
+        if ($this->provinceModel->add($data)) {
+            return $this->response->setJSON(['success' => 'success', 'message' => 'Data Berhasil Ditambahkan']);
         } else {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Ditambahkan']);
+            return $this->response->setJSON(['success' => 'error', 'message' => 'Data Gagal Ditambahkan']);
         }
     }
 
-    public function updatenama($id)
+    public function update($id)
     {
-        $nama = $this->request->getPost('nama');
-        $res = [];
+        $this->db->transBegin();
         try {
+            $id = $this->request->getPost('provid');
+            $nama = $this->request->getPost('nama');
+            $isactive = $this->request->getPost('checkupdate');          
+            
             $data = [
-                'provname' => $nama
+                'provname' => $nama,
+                'isactive' => $isactive,
+                'updateddate' => date('Y-m-d H:i:s'),
+                'updatedby' => '1'
             ];
-            $this->provinceModel->insert($res);
-            $res = [
-                'success' => true, 
-                'message' => 'Nama berhasil diubah'];
+
+
+            $this->provinceModel->update($id, $data);
+            $this->db->transCommit();
+            return $this->response->setJSON(['success' => true, 'message' => 'User Berhasil Diupdate']);
         } catch (Exception $e) {
-            $res = [
-                'success' => false,
-                'message' => $e->getMessage()
-            ];
+            $this->db->transRollback();
+            return $this->response->setJSON(['success' => false, 'message' => $e->getMessage()]);
         }
+    }
+
+    public function updateAddress($id)
+    {
+        $id = $this->request->getPost('provid');
+        $nama = $this->request->getPost('nama');
+        $isactive = $this->request->getPost('isactive');
+        try {
+           
+            $data = [
+                'provname' => $nama,
+                'isactive' => $isactive,
+                'updateddate' => date('Y-m-d H:i:s'),
+                'updatedby' => 1,
+            ];
+            
+            $this->provinceModel->edit($data, $id);
+            
+            return $this->response->setJSON(['success' => 'Horee ', 'message' => true,  'Data' => $data]);
+        }catch(Exception $e){
+            return $this->response->setJSON(['success' => $e->getMessage(), 'message' => false]);
+        }
+
         echo json_encode($res);
     }
 
-    public function edit($id)
-    {
-        $this->db->transBegin();
-        try {
-            $nama = $this->request->getPost('nama');
-            $isactive = $this->request->getPost('isactive');
-            $User = $this->provinceModel->getUser($id);
-
-            if ($nama !== $User['provname'] && $this->provinceModel->validasi($nama)) {
-                return $this->response->setJSON(['success' => false, 'message' => 'Username Sudah Ada']);
-            }
-
-            $data = [
-                'provname' => $nama,
-                'isactive' => $isactive,
-                'updateddate' => date('Y-m-d H:i:s'),
-                'updatedby' => '1'
-            ];
-
-            $this->provinceModel->updateUser($id, $data);
-
-
-            if ($this->db->transStatus() === FALSE) {
-                $this->db->transRollback();
-                throw new Exception('User Gagal Diupdate');
-            }
-            $this->db->transCommit();
-            return $this->response->setJSON(['success' => true, 'message' => 'User Berhasil Diupdate']);
-        } catch (Exception $e) {
-            $this->db->transRollback();
-            return $this->response->setJSON(['success' => false, 'message' => $e->getMessage()]);
-        }
-    }
-
-    public function update($id, $nama)
-    {
-        $this->db->transBegin();
-        try {
-            $nama = $this->request->getPost('nama');
-            $isactive = $this->request->getPost('isactive');
-            $User = $this->provinceModel->getUser($id);
-
-            if ($nama !== $User['provname'] && $this->provinceModel->validasi($nama)) {
-                return $this->response->setJSON(['success' => false, 'message' => 'Username Sudah Ada']);
-            }
-
-
-            $data = [
-                'provname' => $nama,
-                'isactive' => $isactive,
-                'updateddate' => date('Y-m-d H:i:s'),
-                'updatedby' => '1'
-            ];
-
-
-            $this->provinceModel->updateUser($id, $data);
-
-
-            if ($this->db->transStatus() === FALSE) {
-                $this->db->transRollback();
-                throw new Exception('User Gagal Diupdate');
-            }
-            $this->db->transCommit();
-            return $this->response->setJSON(['success' => true, 'message' => 'User Berhasil Diupdate']);
-        } catch (Exception $e) {
-            $this->db->transRollback();
-            return $this->response->setJSON(['success' => false, 'message' => $e->getMessage()]);
-        }
-    }
     public function delete($id)
     {
         $id = $this->request->getPost('provid');
         if (empty($id)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'ID Tidak Boleh Kosong']);
+            return $this->response->setJSON(['success' => 'error', 'message' => 'ID Tidak Boleh Kosong']);
         }
 
         if ($this->provinceModel->delete($id)) {
-            return $this->response->setJSON(['status' => 'success', 'message' => 'Data Berhasil Dihapus']);
+            return $this->response->setJSON(['success' => 'success', 'message' => 'Data Berhasil Dihapus']);
         } else {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Dihapus']);
+            return $this->response->setJSON(['success' => 'error', 'message' => 'Data Gagal Dihapus']);
         }
     }
 }
