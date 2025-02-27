@@ -70,7 +70,7 @@
                                 <tr>
                                     <th scope="row">${index + 1}</th>
                                     <td>
-                                        <input type="text" class="form-control" value="${data.typename}" onblur="updateTypeName(${data.typeid}, this.value, ${data.isactive})">
+                                        <input type="text" class="form-control" value="${data.typename}" onblur="updateTypeName(${data.typeid}, this.value, ${data.isactive == 1 ? 'checked' : ''})">
                                     </td>
                                     <td>${data.createddate}</td>
                                     <td>${data.updateddate}</td>

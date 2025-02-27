@@ -22,15 +22,10 @@
                             <div class="mb-3">
                                 <label for="" class="form-label">Active</label>
                                 <div class="form-check">
+                                <input type="hidden" name="isactive" value="0" />
                                     <input class="form-check-input" type="checkbox" value="1" name="isactiveadd" id="isaactiveadd">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Active
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="0" name="isactiveadd" id="isaactiveadd">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        Non Active
                                     </label>
                                 </div>
                             </div>
@@ -119,7 +114,7 @@
                             <tr>
                                 <th scope="row">${index +1}</th>
                                 <td>
-                                    <input type="text" class="form-control" name"updateusername" id="updateusername" value="${data.username}" onblur="updateUsername(${data.userid}, this.value)">
+                                    <input type="text" class="form-control" name"updateusername" id="updateusername" value="${data.username}" onblur="updateUsername(${data.userid}, this.value, '${data.isactive  == 1 ? 'checked' : ''}')">
                                 </td>
                                 <td>${data.createddate}</td>
                                 <td>${data.updateddate}</td>
@@ -145,29 +140,6 @@
         }
 
         loadTable();
-
-        function updateUser(userid) {
-            let username = $('#username').val();
-
-            $.ajax({
-                type: 'POST',
-                url: '<?= base_url('user/update') ?>',
-                dataType: 'json',
-                data: {
-                    username: username
-                },
-                success: function(response) {
-                    if (response.status == 'success') {
-                        alert(response.message);
-                        loadTable();
-                    } else {
-                        alert(response.message);
-                    }
-                },
-            })
-        }
-
-
 
         function deleteUser(userid) {
             $.ajax({
