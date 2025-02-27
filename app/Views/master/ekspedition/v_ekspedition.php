@@ -3,9 +3,9 @@
 
 <div class="main-content">
     <div class="modal fade" id="ekspeditionModal" tabindex="-1" aria-hidden="true" aria-labelledby="ekspeditionModal">
-        <div class="modal-dialog modal-dialog-centered modal-md">
-            <div class="modal-content">
-                <form id="addForm" action="<?= base_url('ekspedition/add') ?>">
+        <form id="inputForm">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-tittle" id="ekspeditionModal" label-required>Ekspedition Form</h5>
                     </div>
@@ -27,11 +27,9 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" id="submitBtn" class="btn btn-success">Submit</button>
                     </div>
-                </form>
-            </div>
-        </div>
+        </form>
     </div>
-
+</div>
 </div>
 <div class="card p-x shadow m-3">
     <div class="col-sm-4">
@@ -40,7 +38,7 @@
             <i class="bx bx-plus-circle margin-r-2"></i>Tambah
         </button>
     </div>
-    <table class="table table-success table-stripped-columns table-hover">
+    <table class="table table-stripped-columns table-hover">
         <thead class="thead-dark">
             <tr>
                 <th>No</th>
@@ -58,7 +56,7 @@
 </div>
 </table>
 </div>
-<?= $this->endSection(); ?>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -67,18 +65,17 @@
     $(document).ready(function () {
         loadTable();
 
-        $('#addForm').on('submit', function (e) {
+        $('#submitBtn').on('click', function (e) {
             e.preventDefault();
-
             var expname = $('#expname').val();
-            let isActive = $('#isActive').is(":checked") ? 1 : 0;  
+            let isActive = $('#isActive').is(":checked") ? 1 : 0;
 
             $.ajax({
                 url: '<?= base_url('ekspedition/add') ?>',
                 dataType: 'json',
                 type: 'POST',
                 data: {
-                    expname: expname,  
+                    expname: expname,
                     isActive: isActive,
                 },
                 success: function (response) {
@@ -86,17 +83,17 @@
                         Swal.fire({
                             icon: 'success',
                             title: response.message,
-                            showConfirmButton: false,
-                            timer: 1500,
+                            showConfirmButton: true,
                         }).then(function () {
-                            $('#ekspeditionModal').modal('hide');  
+                            $('#ekspeditionModal').modal('hide');
+                            $('.modal-backdrop').remove();
                             loadTable();
                         });
                     } else {
                         Swal.fire({
                             icon: 'error',
                             title: response.message,
-                            text: 'Terjadi Kesalahan Silahkan coba lagi',  
+                            text: 'Terjadi Kesalahan Silahkan coba lagi',
                             showConfirmButton: true,
                         });
                     }
@@ -126,20 +123,26 @@
             success: function (response) {
                 var tableBody = $('#tableBody');
                 tableBody.empty();
-                response.forEach(function (ekspedition, index) {  
+                response.forEach(function (ekspedition, index) {
                     var newRow = `
-                        <tr id="row-${ekspedition.expid}">  <!-- Corrected to use ekspedition -->
-                            <td>${ekspedition.expid}</td>  <!-- Corrected to use ekspedition -->
-                            <td>${ekspedition.expname}</td>  <!-- Corrected to use ekspedition -->
+                        <tr id="row-${ekspedition.expid}"> 
+                            <td>${ekspedition.expid}</td>  
+                            <td>${ekspedition.expname}</td>  
                             <td>${ekspedition.createddate}</td>
                             <td>${ekspedition.updateddate}</td>
-                            <td>${ekspedition.isactive}</td>
                             <td>
-                                <button class="btn btn-danger delete-btn" data-id="${ekspedition.expid}">
-                                    <i class="bx bx-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
+                                <div class= \"form-check\">
+                                    <input class= \"form-check-input\" type=\"checkbox\" value=\"${ekspedition.isActive ? 1 : 0}\" id=\"flexCheckChecked\">
+                                    <label class=\"form-check-label\" for=\"flexCheckChecked\">
+                                    </label>
+                                </div>      
+                              </td>
+                            <td>
+                            <button class="btn btn-danger delete-btn" id="deleteBtn" data-id="${ekspedition.expid}">
+                                <i class="bx bx-trash"></i>
+                            </button>
+                        </td>                  
+                    </tr>
                     `;
                     tableBody.append(newRow);
                 });
@@ -150,4 +153,56 @@
         });
     }
 
+
+    // function deleteExp() {
+    //     const expid = $(this).data('expid');
+    //     Swal.fire({
+    //         icon: 'question',
+    //         title: 'Yakin ingin menghapus data?',
+    //         text: 'data yang dihapus tidak dapat dikembalikan lagi',
+    //         showConfirmButton: true,
+    //         showCancelButton: true,
+    //         confirmButtonColor: rgb(189, 255, 34),
+    //     }).then(result => {
+    //         if (result.isConfirmed) {
+    //             $.ajax({
+    //                 url: '<?= base_url('ekspedition/delete') ?>',
+    //                 method: 'post',
+    //                 dataType: 'json',
+    //                 data: {
+    //                     expid: expid
+    //                 },
+    //                 success: function (response) {
+    //                     if (response.status === success) {
+    //                         Swall.fire({
+    //                             icon: 'success',
+    //                             title: 'Data Dihapus',
+    //                             showConfirmButton: true,
+    //                         });
+    //                     } else {
+    //                         Swal.fire({
+    //                             icon: 'error',
+    //                             title: 'System error occured',
+    //                             showConfirmButton: true,
+    //                         });
+    //                     }
+    //                 },
+    //                 error: function (response) {
+    //                     Swal.fire({
+    //                         icon: 'error',
+    //                         title: $e->getMessage,
+    //                         showConfirmButton: true,
+    //                     });
+    //                 },
+
+    //             });
+
+    //         } 
+    //     })
+    // }
+
+
+
+
 </script>
+<?= $this->endSection(); ?>

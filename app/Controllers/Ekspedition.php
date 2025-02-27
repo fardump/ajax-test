@@ -27,50 +27,51 @@ class Ekspedition extends BaseController
 
     public function getData()
     {
-        return $this->response->setJSON($this->ekspeditionModel->findData());
-    }
+        $data = $this->ekspeditionModel->findAll();
+        return $this->response->setJSON($data);    }
 
     public function add()
-    {
-        $expname = $this->request->getVar('expname');
-        $isactive = $this->request->getVar('isActive');
+{
+    $expname = $this->request->getVar('expname');
+    $isactive = $this->request->getVar('isActive');
 
-        if (empty($expname || $isactive)) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Invalid required parameter'
-            ]);
-        }
-
-        $data = [
-            'createddate' => date('Y-m-d H:i:s'),
-            'createdby' => '1',
-            'expname' => $expname,
-            'isactive' => $isactive,
-            'updateddate' => date('Y-m-d H:i:s'),
-            'updatedby' => '1',
-        ];
-
-        try {
-            if ($this->ekspeditionModel->saveData($data)) {
-                return $this->response->setJSON([
-                    'status' => 'success',
-                    'message' => 'Data berhasil disimpan',
-                    'data' => $data
-                ]);
-            }
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Data Gagal disimpan'
-            ]);
-        } catch (Exception $e) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ]);
-        }
+    if (empty($expname || $isactive)) {
+        return $this->response->setJSON([
+            'status' => 'error',
+            'message' => 'invalid required parameter'
+        ])->setContentType('application/json');  // Add content type
     }
 
+    $data = [
+        'createddate' => date('Y-m-d H:i:s'),
+        'createdbty' => '1',
+        'expname' => $expname,
+        'isactive' => $isactive,
+        'updateddate' => date('Y-m-d H:i:s'),
+        'updatedby' => '1',
+    ];
+
+    try {
+        if ($this->ekspeditionModel->saveData($data)) {
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => 'Data berhasil disimpan',
+                'data' => $data
+            ])->setContentType('application/json');
+        }
+        
+        return $this->response->setJSON([
+            'status' => 'error',
+            'message' => 'Data Gagal disimpan'
+        ])->setContentType('application/json');
+
+    } catch (Exception $e) {
+        return $this->response->setJSON([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ])->setContentType('application/json');
+    }
+}
     public function delete()
     {
         $this->db->transBegin();
