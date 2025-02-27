@@ -42,10 +42,6 @@ class Category extends BaseController
             return $this->response->setJSON(['status' => 'error', 'message' => 'Nama Tidak Boleh Kosong']);
         }
 
-        if (empty($isactive)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'isActive Tidak Boleh Kosong']);
-        }
-
         $data = [
             'catname' => $nama,
             'isactive' => $isactive,

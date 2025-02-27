@@ -19,20 +19,18 @@
                                 <label for="nama" class="form-label">Category Name</label>
                                 <input type="text" class="form-control" name="nama" id="nama" placeholder="Enter Category Name">
                             </div>
-                            <div class="mb-3" id="isactive">
-                                <label for="" class="form-label">Active</label>
-                                <div class="form-check">
+                            <div class="mb-3">
+                               
                                     <input class="form-check-input" type="checkbox" value="1" name="isactiveinsert" onclick="selectone(this)">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Active
                                     </label>
-                                </div>
-                                <div class="form-check">
+                                
                                     <input class="form-check-input" type="checkbox" value="0" name="isactiveinsert" onclick="selectone(this)">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Non Active
                                     </label>
-                                </div>
+                                
                             </div>
                         </form>
                     </div>
