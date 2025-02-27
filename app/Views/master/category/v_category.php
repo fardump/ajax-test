@@ -21,14 +21,9 @@
                             </div>
                             <div class="mb-3">
                                
-                                    <input class="form-check-input" type="checkbox" value="1" name="isactiveinsert" onclick="selectone(this)">
+                                    <input class="form-check-input" type="checkbox" value="1" id="isactiveinsert" name="isactiveinsert">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Active
-                                    </label>
-                                
-                                    <input class="form-check-input" type="checkbox" value="0" name="isactiveinsert" onclick="selectone(this)">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        Non Active
                                     </label>
                                 
                             </div>

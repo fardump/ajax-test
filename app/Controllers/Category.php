@@ -36,7 +36,7 @@ class Category extends BaseController
     public function add()
     {
         $nama = $this->request->getPost('nama');
-        $isactive = $this->request->getPost('isactive') ;
+        $isactive = $this->request->getPost('isactive') ? 1 : 0;
 
         if (empty($nama)){
             return $this->response->setJSON(['status' => 'error', 'message' => 'Nama Tidak Boleh Kosong']);
