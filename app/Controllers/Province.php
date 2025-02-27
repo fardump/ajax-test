@@ -30,37 +30,34 @@ class Province extends BaseController
     {
         $filteredUsers = $this->provinceModel->getDataAll();
 
-        return $this->response->setJSON(['success' => 1 , 'data' => $filteredUsers]);
+        return $this->response->setJSON(['success' => 1, 'data' => $filteredUsers]);
     }
 
 
     public function add()
     {
-
         $nama = $this->request->getPost('nama');
         $isactive = $this->request->getPost('isactive');
 
         if (empty($nama)) {
-            return $this->response->setJSON(['success' => 'success', 'message' => 'Nama Tidak Boleh Kosong']);
+            return $this->response->setJSON(['success' => false, 'message' => 'Nama Tidak Boleh Kosong']);
         }
+        try {
+            $data = [
+                'provname' => $nama,
+                'isactive' => $isactive,
+                'createddate' => date('Y-m-d H:i:s'),
+                'createdby' => '1',
+                'updateddate' => date('Y-m-d H:i:s'),
+                'updatedby' => '1'
+            ];
+            if ($this->provinceModel->add($data)) {
+            }
 
-        // if (empty($isactive)) {
-        //     return $this->response->setJSON(['success' => 'error', 'message' => 'Isactive Tidak Boleh Kosong']);
-        // }
-
-        $data = [
-            'provname' => $nama,
-            'isactive' => $isactive,
-            'createddate' => date('Y-m-d H:i:s'),
-            'createdby' => '1',
-            'updateddate' => date('Y-m-d H:i:s'),
-            'updatedby' => '1'
-        ];
-
-        if ($this->provinceModel->add($data)) {
-            return $this->response->setJSON(['success' => 'success', 'message' => 'Data Berhasil Ditambahkan']);
-        } else {
-            return $this->response->setJSON(['success' => 'error', 'message' => 'Data Gagal Ditambahkan']);
+            return $this->response->setJSON(['success' => true, 'message' => 'User Berhasil Diupdate']);
+        } catch (Exception $e) {
+            $this->db->transRollback();
+            return $this->response->setJSON(['success' => false, 'message' => $e->getMessage()]);
         }
     }
 
@@ -70,8 +67,8 @@ class Province extends BaseController
         try {
             $id = $this->request->getPost('provid');
             $nama = $this->request->getPost('nama');
-            $isactive = $this->request->getPost('checkupdate');          
-            
+            $isactive = $this->request->getPost('checkupdate');
+
             $data = [
                 'provname' => $nama,
                 'isactive' => $isactive,
@@ -94,18 +91,18 @@ class Province extends BaseController
         $nama = $this->request->getPost('nama');
         $isactive = $this->request->getPost('isactive');
         try {
-           
+
             $data = [
                 'provname' => $nama,
                 'isactive' => $isactive,
                 'updateddate' => date('Y-m-d H:i:s'),
                 'updatedby' => 1,
             ];
-            
+
             $this->provinceModel->edit($data, $id);
-            
+
             return $this->response->setJSON(['success' => 'Horee ', 'message' => true,  'Data' => $data]);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return $this->response->setJSON(['success' => $e->getMessage(), 'message' => false]);
         }
 
