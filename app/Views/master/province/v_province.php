@@ -196,15 +196,17 @@
 
 
     $('#table-province').on('blur', '.nama', function() {
-        var provid = $(this).data('id');
-        var nama = $(this).val();
+        let provid = $(this).data('id');
+        let nama = $(this).val();
+        let check = $(this)
 
         $.ajax({
             url: '<?= base_url('province/updateAddress') ?>/' + provid,
             type: 'POST',
             data: {
                 provid: provid,
-                nama: nama
+                nama: nama,
+                isactive: check.closest('tr').find('.updateisactive').is(':checked')? 1: 0
             },
             dataType: 'json',
             success: function(response) {
@@ -242,7 +244,7 @@
                     });
                 }
                 var check = $(this).closest('tr').find('.updateisactive');
-                check.prop('checked', response.data.isactive == 1);
+                check.prop('checked', response.data.isactive == true);
                 loadprov();
             }
         })
