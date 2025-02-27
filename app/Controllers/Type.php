@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
@@ -32,7 +33,7 @@ class Type extends BaseController
             'typename' => 'required',
             'isactive' => 'required',
         ]);
-        
+
         $data = [
             'typename' => $this->request->getPost('typename'),
             'isactive' => $this->request->getPost('isactive') == '1' ? '1' : '0',
@@ -42,36 +43,57 @@ class Type extends BaseController
             'updatedby' => '1',
         ];
         $this->typeModel->saveType($data);
-        return redirect()->to('/type');
+        
+        return $this->response->setJSON([
+            'status' => 'success',
+            'message' => 'Data berhasil ditambahkan!',
+            'data' => $data,
+        ]);
     }
-
-    public function delete()
+    public function delete($id)
     {
-        $typeid = $this->request->getPost('typeid');
-        if (empty($typeid)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'ID Tidak Boleh Kosong']);
-        }
+        $deleted = $this->typeModel->delete($id);
 
-        if ($this->typeModel->deleteType($typeid)) {
-            return $this->response->setJSON(['status' => 'success', 'message' => 'Data Berhasil Dihapus']);
+        if ($deleted) {
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => 'Data Berhasil Dihapus'
+            ]);
         } else {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Dihapus']);
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Data Gagal Dihapus'
+            ]);
         }
+    }
+    public function loadTable()
+    {
+        $data = $this->typeModel->findAll();
+        return $this->response->setJSON([
+            'status' => 'success',
+            'data' => $data
+        ]);
     }
 
     public function update()
     {
-        $id = $this->request->getPost('typeid');
-        $isactive = $this->request->getPost('isactive');
-        if (empty($typeid)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'ID Tidak Boleh Kosong']);
-        }
 
-        if ($this->typeModel->updateType($typeid, ['isactive' => $isactive])) {
-            return $this->response->setJSON(['status' => 'success', 'message' => 'Data Berhasil Diupdate']);
+        $typeid = $this->request->getPost('typeid');
+        $typename = $this->request->getPost('typename');
+        $isactive = $this->request->getPost('isactive');
+
+        $data = [
+            'typename' => $typename,
+            'isactive' => $isactive == '1' ? '1' : '0',
+            'updateddate' => date('Y-m-d H:i:s'),
+            'updatedby' => '1',
+        ];
+
+        if ($this->typeModel->update($typeid, $data)) {
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Type updated successfully']);
         } else {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Diupdate']);
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to update type']);
         }
     }
-}
+ }
 

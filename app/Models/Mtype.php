@@ -11,20 +11,20 @@ class Mtype extends Model
     protected $allowedFields = ['typename', 'createddate', 'createdby', 'updateddate', 'updatedby', 'isactive'];
     protected $useTimestamps = false;
 
+    public function getAll()
+    {
+        return $this->db->table($this->table)->get()->getResultArray();
+    }
+
     public function saveType($data)
     {
         $this->db->table($this->table)->insert($data);
     }
 
-    public function deleteType($data)
+    public function deleteType($id)
     {
-        $this->db->table($this->table)->where('typename', $data['typename'])->update($data);
+        $this->db->table($this->table)->delete(['typeid' => $id]);
     }
 
-    public function updateType($data)
-    {
-        $this->db->table($this->table)->where('typename', $data['typename'])->update($data);
-    }
 }
-
 ?>

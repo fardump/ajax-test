@@ -26,11 +26,13 @@ $routes->group('category', function ($routes) {
     $routes->add('update', 'Category::update');
     $routes->add('delete', 'Category::delete');
 });
+
 $routes->group('type', function ($routes) {
     $routes->get('', 'Type::index');
     $routes->post('save', 'Type::save');
-    $routes->post('delete/(:any)', 'Type::delete/$1');
+    $routes->post('delete/(:num)', 'Type::delete/$1');
     $routes->post('update', 'Type::update');
+    $routes->get('loadTable', 'Type::loadTable');
 });
 
 $routes->group('city', function ($routes) {
