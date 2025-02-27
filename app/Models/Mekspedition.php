@@ -6,12 +6,13 @@ use CodeIgniter\Model;
 
 class Mekspedition extends Model
 {
-    protected $table = 'msekspedition';
+    protected $table = 'msexpedition';
     protected $primaryKey = 'expid';
     protected $allowedFields = ['expname', 'createddate', 'createdby', 'updateddate', 'updatedby', 'isactive'];
     protected $useTimestamps = false;
 
-    public function addData($data)
+
+    public function saveData($data)
     {
         return $this->insert($data);
     }
@@ -20,6 +21,11 @@ class Mekspedition extends Model
     public function deleteExp($id)
     {
         return $this->where('expid', $id)->delete();
-    }        
+    }
 
+    public function findData()
+    {
+        return $this->orderBy('expid', 'ASC')
+            ->findAll();
+    }
 }

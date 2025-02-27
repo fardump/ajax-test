@@ -27,52 +27,34 @@ class Ekspedition extends BaseController
 
     public function getData()
     {
-        return $this->response->setJSON($this->ekspeditionModel->getData());
+        return $this->response->setJSON($this->ekspeditionModel->findData());
     }
 
     public function add()
     {
-        try {
-            $this->db->transBegin();
-            $expId = $this->request->getPost('id');
-            $expName = $this->request->getPost('expName');
-            $createdBy = $this->request->getPost('usernm');
-            $isActive = $this->request->getPost('checkboxVal');
+        $expname = $this->request->getVar('expname');
+        $isactive = $this->request->getVar('checkboxVal');
 
-            if (empty($expId || $expName || $createdBy || $isActive)) {
-                return $this->response->setJSON([
-                    'status' => 'error',
-                    'message' => 'Invalid Required Parameter',
-                ]);
-            }
-
-            $data = [
-                'createdby' => $createdBy,
-                'expname' => $expName,
-                'isactive' => $isActive,
-            ];
-
-            $this->ekspeditionModel->addData($expId, $data);
-
-            if ($this->db->transStatus() === FALSE) {
-                $this->db->transRollback();
-                return $this->response->setJSON([
-                    'status' => 'error',
-                    'message' => 'Data Gagal Disimpan'
-                ]);
-            }
-
-            $this->db->transCommit();
-            return $this->response->setJSON([
-                'status' => 'success',
-                'message' => 'Data Berhasil Disimpan'
-            ]);
-        } catch (Exception $e) {
-            $this->db->transRollback();
-            return $this->response->setJSON([
+        if (empty($expname || $isactive)) {
+            $this->response->setJSON([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => 'invalid required parameter'
             ]);
+        }
+
+        $data = [
+            'createddate' => date('Y-m-d H:i:s'),
+            'createdbty' => '1',
+            'expname' => $expname,
+            'isactive' => $isactive,
+            'updateddate' => date('Y-m-d H:i:s'),
+            'updatedby' => '1',
+        ];
+
+        if ($this->ekspeditionModel->saveData($data)) {
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Data berhasil disimpan', 'data' => $data]);
+        } else {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal disimpan']);
         }
     }
 
