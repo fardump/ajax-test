@@ -85,31 +85,27 @@ class User extends BaseController
     public function update()
     {
 
-        $validation = $this->validate([
-            'username' => 'required|min_length[3]|max_length[255]'
-        ]);
-        if (!$validation) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'errors' => $this->validator->getErrors(),
-            ]);
-        }
+        $userid = $this->request->getPost('userid');
+        $username = $this->request->getPost('username');
+        $isactive = $this->request->getPost('isactive');
 
-        $Data = [
-            'username' => $this->request->getPost('username'),
-            'isactive' => $this->request->getPost('isactive'),
-            'createddate' => date('Y-m-d H:i:s'),
-            'createdby' => '1',
+        $data = [
+            'username' => $username,
+            'isactive' => $isactive,
             'updateddate' => date('Y-m-d H:i:s'),
             'updatedby' => '1'
         ];
 
-        $this->userModel->update($Data);
-
-        return $this->response->setJSON([
-            'status' => 'success',
-            'message' => 'Data berhasil ditambahkan!',
-            'data' => $Data,
-        ]);
+        if ($this->userModel->update($userid, $data)) {
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => 'Data has been saved '
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Failed to update username'
+            ]);
+        }
     }
 }

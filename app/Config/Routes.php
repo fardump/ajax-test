@@ -20,7 +20,7 @@ $routes->group('user', function ($routes) {
     $routes->add('deleteUsers/(:num)', 'User::deleteUsers/$1');
     $routes->add('add', 'User::add');
     $routes->get('loadTable', 'User::loadTable');
-    $routes->POST('update/(:num)', 'User::edit/$1');
+    $routes->POST('update', 'User::update');
 });
 $routes->group('category', function ($routes) {
     $routes->add('', 'Category::index');

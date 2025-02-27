@@ -35,8 +35,7 @@
                                 </div>
                             </div>
                     </div>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" id="saveButton" class="btn btn-primary saveButton">Save changes</button>
+                    <button type="submit" id="saveButton" class="btn btn-primary saveButton mb-2 ms-2" style="max-width: 180px;">Save changes</button>
                 </div>
                 </form>
             </div>
@@ -119,11 +118,14 @@
                             let row = `
                             <tr>
                                 <th scope="row">${index +1}</th>
-                                <td> 
-                                <input type = "text" class =form-control" id="username" value="${data.username}" onblur="updateUser(${data.userid})">
+                                <td>
+                                    <input type="text" class="form-control" name"updateusername" id="updateusername" value="${data.username}" onblur="updateUsername(${data.userid}, this.value)">
+                                </td>
                                 <td>${data.createddate}</td>
                                 <td>${data.updateddate}</td>
-                                <td>${data.isactive}</td>
+                                <td>
+                                    <input type="checkbox" class="form-check input" ${data.isactive == 1 ? 'checked' : ''} onchange="updateisactive(${data.userid}, this.checked, '${data.username}')">
+                                </td>
                                 <td>
                                 <form action="/ajax-test/user/deleteUsers/${data.userid}" method="post" class="deleteForm d-inline">
                                 <button  type="submit" class = "btn btn-sm btn-danger">Delete</button>
@@ -273,13 +275,71 @@
             })
         })
 
+        window.updateUsername = function(userid, username, isactive) {
+            $.ajax({
+                url: '<?= base_url('user/update') ?>',
+                type: 'POST',
+                data: {
+                    userid: userid,
+                    username: username,
+                    isactive: isactive ? 1 : 0
+                },
+                success: function(response) {
+                    if (response.status == 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message,
+                            confirmButtonText: 'Ok'
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Failed',
+                            text: response.message,
+                            confirmButtonText: 'Ok'
+                        });
+                    }
+                    loadTable();
+                },
+                error: function() {
+                    alert('Failed to update type name');
+                }
+            });
+        }
 
-
-
-
-
-
-
+        window.updateisactive = function(userid, isactive, username) {
+            $.ajax({
+                url: '<?= base_url('user/update') ?>',
+                type: 'POST',
+                data: {
+                    userid: userid,
+                    username: username,
+                    isactive: isactive ? 1 : 0
+                },
+                success: function(response) {
+                    if (response.status == 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message,
+                            confirmButtonText: 'Ok'
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Failed',
+                            text: response.message,
+                            confirmButtonText: 'Ok'
+                        });
+                    }
+                    loadTable();
+                },
+                error: function() {
+                    alert('Failed to update is active');
+                }
+            });
+        }
 
         $(document).on('submit', '.deleteForm', function(e) {
             e.preventDefault();
