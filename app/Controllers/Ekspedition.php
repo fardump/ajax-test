@@ -25,6 +25,11 @@ class Ekspedition extends BaseController
         return view('master/ekspedition/v_ekspedition', $data);
     }
 
+    public function getData()
+    {
+        return $this->response->setJSON($this->ekspeditionModel->getData());
+    }
+
     public function add()
     {
         try {
@@ -108,9 +113,5 @@ class Ekspedition extends BaseController
                 'message' => $e->getMessage()
             ]);
         }
-    }
-
-    public function edit() {
-        
     }
 }

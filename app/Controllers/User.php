@@ -27,11 +27,11 @@ class User extends BaseController
         return view('master/user/v_user', $data);
     }
 
-    public function deleteUsers()
+    public function deleteUsers($id)
     {
-        $id = $this->request->getPost('id');
+        $deleted = $this->userModel->delete($id);
 
-        if ($this->userModel->delete($id)) {
+        if ($deleted) {
             return $this->response->setJSON([
                 'status' => 'success',
                 'message' => 'Data Berhasil Dihapus'
@@ -48,8 +48,7 @@ class User extends BaseController
     {
 
         $validation = $this->validate([
-            'username' => 'required|min_length[3]|max_length[255]',
-            'isactive' => 'required|in_list[0,1]',
+            'username' => 'required|min_length[3]|max_length[255]'
         ]);
         if (!$validation) {
             return $this->response->setJSON([
@@ -68,6 +67,44 @@ class User extends BaseController
         ];
 
         $this->userModel->insert($Data);
+
+        return $this->response->setJSON([
+            'status' => 'success',
+            'message' => 'Data berhasil ditambahkan!',
+            'data' => $Data,
+        ]);
+    }
+    public function loadTable()
+    {
+        $data = $this->userModel->findAll();
+        return $this->response->setJSON([
+            'status' => 'success',
+            'data' => $data
+        ]);
+    }
+    public function update()
+    {
+
+        $validation = $this->validate([
+            'username' => 'required|min_length[3]|max_length[255]'
+        ]);
+        if (!$validation) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'errors' => $this->validator->getErrors(),
+            ]);
+        }
+
+        $Data = [
+            'username' => $this->request->getPost('username'),
+            'isactive' => $this->request->getPost('isactive'),
+            'createddate' => date('Y-m-d H:i:s'),
+            'createdby' => '1',
+            'updateddate' => date('Y-m-d H:i:s'),
+            'updatedby' => '1'
+        ];
+
+        $this->userModel->update($Data);
 
         return $this->response->setJSON([
             'status' => 'success',

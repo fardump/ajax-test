@@ -6,7 +6,6 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'User::index');
-$routes->get('/', 'User::index');
 
 $routes->group('province', function ($routes) {
     $routes->get('', 'Province::index');
@@ -14,11 +13,14 @@ $routes->group('province', function ($routes) {
     $routes->get('edit', 'Province::edit');
     $routes->post('update/(:any)', 'Province::update/$1');
     $routes->post('delete/(:any)', 'Province::delete/$1');
+    $routes->get('updatenama/(:any)', 'Province::updatenama/$1');
 });
 $routes->group('user', function ($routes) {
     $routes->get('', 'User::index');
-    $routes->add('deleteUsers', 'User::deleteUsers');
+    $routes->add('deleteUsers/(:num)', 'User::deleteUsers/$1');
     $routes->add('add', 'User::add');
+    $routes->get('loadTable', 'User::loadTable');
+    $routes->POST('update/(:num)', 'User::edit/$1');
 });
 $routes->group('category', function ($routes) {
     $routes->add('', 'Category::index');
@@ -32,9 +34,9 @@ $routes->group('category', function ($routes) {
 $routes->group('type', function ($routes) {
     $routes->get('', 'Type::index');
     $routes->post('save', 'Type::save');
-    $routes->post('delete', 'Type::delete');
+    $routes->post('delete/(:any)', 'Type::delete/$1');
+    $routes->post('update', 'Type::update');
 });
-
 $routes->group('city', function ($routes) {
     $routes->add('', 'City::index');
     $routes->add('getAll', 'City::getAll');

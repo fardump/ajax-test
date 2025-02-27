@@ -10,12 +10,13 @@
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="type/save" method="POST">
+                <form id="formadd" action="type/save" method="POST">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Add Type</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <input type="text" name="typeid" id="typeid" hidden>
                         <div id="typename-group" class="form-group">
                             <label for="typename">Type Name</label>
                             <input type="text" class="form-control" id="typename" name="typename"
@@ -50,15 +51,19 @@
                 foreach ($type as $data): ?>
                     <tr>
                         <th scope="row"><?= $no++ ?></th>
-                        <td><?= $data['typename'] ?></td>
+                        <td><input type="text" value="<?= $data['typename'] ?>" onblur="blurfunction()"></td> 
                         <td><?= $data['createddate'] ?></td>
                         <td><?= $data['updateddate'] ?></td>
-                        <td><?= $data['isactive'] ?></td>
+                        <td><input type="checkbox" value="<?= $data['isactive'];
+                        if ($data['isactive'] == 1) {
+                            'isactive' == 'checked';
+                        } ?>" onchange="changefunction()"></td>
                         <td>
-                            <button class="btn btn-sm btn-warning" onclick="formUpdate(<?= $data['typeid'] ?>)"
-                                data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
-                            <button class="btn btn-sm btn-danger" type="button"
-                                onclick="hapus(<?= $data['typeid'] ?>)">Delete</button>
+                            <form id="formdelete" action="type/delete" method="POST"
+                                data-confirm="Are you sure you wish to delete this resource?">
+                                <input type="hidden" name="_method" value="DELETE"/>
+                                <button class="btn btn-danger" id="formdelete" type="submit">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -67,11 +72,12 @@
     </div>
 </div>
 <?= $this->endSection(); ?>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
     $(document).ready(function () {
 
-        $("form").on('click', function (event) {
+        $("#formadd").on('click', function (event) {
             var formData = {
                 typename: $("#typename").val(),
                 isactive: $("#isactive").val(),
@@ -90,48 +96,38 @@
             event.preventDefault();
         });
 
-        function hapus(typeid) {
-            $.ajax({
-                type: 'POST',
-                url: 'type/delete',
-                dataType: 'json',
-                data: {
-                    typeid: typeid,
-                },
-                success: function (response) {
-                    if (response.status == 'error') {
-                        alert(response.message);
-                    } else {
-                        alert(response.message);
-                        window.location.reload();
-                    }
-                },
-                error: function (response) {
-                    alert('Data gagal dihapus');
+        function blurfunction() {
+            let x = document.getElementById("typename");
+            alert('test');
+        }
+
+        window.changefunction = function () {
+            var checkbox = document.querySelector("input[type=checkbox]");
+            checkbox.addEventListener('change', function () {
+                if (checkbox.checked) {
+                    alert('checked');
+                } else {
+                    alert('not checked');
                 }
             });
         }
 
-        function formUpdate(catid) {
+        $("#formdelete").on('click', function (event) {
+            var formData = {
+                typeid: $("#typeid").val(),
+            };
+
             $.ajax({
-                url: '<?= base_url('type/edit/') ?>' + typeid,
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    typeid: typeid,
-                },
-                success: function (response) {
-                    if (response.status == 'error') {
-                        alert(response.message);
-                    } else {
-                        $('#namaupdate').val(response.data.typename);
-                        $('#editModal').modal('show');
-                    }
-                },
-                error: function (response) {
-                    alert('Data gagal diupdate');
-                }
+                type: "POST",
+                url: "type/delete/" + typeid,
+                data: formData,
+                dataType: "json",
+                encode: true,
+            }).done(function (data) {
+                console.log(typeid);
             });
-        }
+
+            event.preventDefault();
+        });
     });
 </script>
