@@ -7,6 +7,7 @@ use CodeIgniter\Controller\database;
 use App\Models;
 use App\Models\Mcity;
 use Exception;
+use PhpParser\Node\Expr\Empty_;
 
 class City extends BaseController
 {
@@ -37,6 +38,9 @@ class City extends BaseController
         $isactive = $this->request->getPost('isactive');
         $this->db->transBegin();
         try {
+            if(empty($cityname)){
+                return $this->response->setJSON(['pesan' => 'Data city dibutuhkan', 'sukses' => 0]);    
+            }
             $data = [
                 'cityname' => $cityname,
                 'isactive' => $isactive,

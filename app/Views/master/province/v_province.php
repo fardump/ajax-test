@@ -89,6 +89,10 @@
                         Toast.fire({
                             icon: 'success',
                             title: response.message,
+                        }).then(() => {
+                            $('#exampleModal').modal('hide');
+                            $('.modal-backdrop').remove();
+                            $('body').removeClass('modal-open');
                         });
                     } else {
                         const Toast = Swal.mixin({
@@ -105,10 +109,12 @@
                         Toast.fire({
                             icon: "error",
                             title: response.message
-                        });
+                        }).then(() => {
+                            $('#exampleModal').modal('show');
+                        })
                     }
+                    $('body').removeClass('modal-open');
                     loadprov();
-                    $('#exampleModal').modal('hide');
                 },
                 error: function(response) {
                     const Toast = Swal.mixin({
@@ -132,7 +138,7 @@
 
         $('#table-province').on('change', '.updateisactive', function() {
             let provid = $(this).data('id');
-            let isactive = $(this).is(':checked') ? 1: 0;
+            let isactive = $(this).is(':checked') ? 1 : 0;
             let nama = $(this).closest('tr').find('.nama').val();
             let check = $(this);
 
@@ -147,37 +153,37 @@
                 success: function(response) {
                     if (response.message) {
                         const Toast = Swal.mixin({
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.onmouseenter = Swal.stopTimer;
-                            toast.onmouseleave = Swal.resumeTimer;
-                        }
-                    });
-                    Toast.fire({
-                        icon: "success",
-                        title: response.success,
-                    });
-                    check.prop('checked', isactive == 1);
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+                        Toast.fire({
+                            icon: "success",
+                            title: response.success,
+                        });
+                        check.prop('checked', isactive == 1);
                     } else {
                         const Toast = Swal.mixin({
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.onmouseenter = Swal.stopTimer;
-                            toast.onmouseleave = Swal.resumeTimer;
-                        }
-                    });
-                    Toast.fire({
-                        icon: "success",
-                        title: response.success,
-                    });
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+                        Toast.fire({
+                            icon: "success",
+                            title: response.success,
+                        });
                     }
                     loadprov();
                 },
@@ -192,76 +198,76 @@
                 }
             });
         })
-  
 
 
-    $('#table-province').on('blur', '.nama', function() {
-        let provid = $(this).data('id');
-        let nama = $(this).val();
-        let check = $(this)
 
-        $.ajax({
-            url: '<?= base_url('province/updateAddress') ?>/' + provid,
-            type: 'POST',
-            data: {
-                provid: provid,
-                nama: nama,
-                isactive: check.closest('tr').find('.updateisactive').is(':checked')? 1: 0
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.message) {
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.onmouseenter = Swal.stopTimer;
-                            toast.onmouseleave = Swal.resumeTimer;
-                        }
-                    });
-                    Toast.fire({
-                        icon: "success",
-                        title: response.success,
-                    });
-                } else {
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.onmouseenter = Swal.stopTimer;
-                            toast.onmouseleave = Swal.resumeTimer;
-                        }
-                    });
-                    Toast.fire({
-                        icon: "error",
-                        title: response.success
-                    });
+        $('#table-province').on('blur', '.nama', function() {
+            let provid = $(this).data('id');
+            let nama = $(this).val();
+            let check = $(this)
+
+            $.ajax({
+                url: '<?= base_url('province/updateAddress') ?>/' + provid,
+                type: 'POST',
+                data: {
+                    provid: provid,
+                    nama: nama,
+                    isactive: check.closest('tr').find('.updateisactive').is(':checked') ? 1 : 0
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.message) {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+                        Toast.fire({
+                            icon: "success",
+                            title: response.success,
+                        });
+                    } else {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+                        Toast.fire({
+                            icon: "error",
+                            title: response.success
+                        });
+                    }
+                    var check = $(this).closest('tr').find('.updateisactive');
+                    check.prop('checked', response.data.isactive == true);
+                    loadprov();
                 }
-                var check = $(this).closest('tr').find('.updateisactive');
-                check.prop('checked', response.data.isactive == true);
-                loadprov();
-            }
+            })
         })
     })
-})
 
-function loadprov() {
-            $.ajax({
-                url: "<?= base_url('province/getdata') ?>",
-                type: "GET",
-                dataType: "json",
-                success: function(response) {
-                    if (response.success == 1) {
-                        let tbody = $('#table-province tbody');
-                        tbody.empty();
-                        $.each(response.data, function(index, data) {
-                            let row = `
+    function loadprov() {
+        $.ajax({
+            url: "<?= base_url('province/getdata') ?>",
+            type: "GET",
+            dataType: "json",
+            success: function(response) {
+                if (response.success == 1) {
+                    let tbody = $('#table-province tbody');
+                    tbody.empty();
+                    $.each(response.data, function(index, data) {
+                        let row = `
                             <tr>
                                 <td scope="row">${index + 1}</td>
                                 <td>
@@ -277,17 +283,17 @@ function loadprov() {
                                 </td>
                             </tr>
                             `;
-                            tbody.append(row);
-                        })
-                    } else {
-                        swal.fire('error', response.message, 'error')
-                    }
-                },
-                error: function(xhr, textStatus, error) {
-                    console.error(error);
+                        tbody.append(row);
+                    })
+                } else {
+                    swal.fire('error', response.message, 'error')
                 }
-            });
-        }
+            },
+            error: function(xhr, textStatus, error) {
+                console.error(error);
+            }
+        });
+    }
 
 
     function hapus(provid) {

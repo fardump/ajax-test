@@ -47,16 +47,6 @@ class User extends BaseController
     public function add()
     {
 
-        $validation = $this->validate([
-            'username' => 'required|min_length[3]|max_length[255]'
-        ]);
-        if (!$validation) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'errors' => $this->validator->getErrors(),
-            ]);
-        }
-
         $Data = [
             'username' => $this->request->getPost('username'),
             'isactive' => $this->request->getPost('isactive'),
