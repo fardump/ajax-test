@@ -33,28 +33,41 @@ class Ekspedition extends BaseController
     public function add()
     {
         $expname = $this->request->getVar('expname');
-        $isactive = $this->request->getVar('checkboxVal');
+        $isactive = $this->request->getVar('isActive');
 
         if (empty($expname || $isactive)) {
-            $this->response->setJSON([
+            return $this->response->setJSON([
                 'status' => 'error',
-                'message' => 'invalid required parameter'
+                'message' => 'Invalid required parameter'
             ]);
         }
 
         $data = [
             'createddate' => date('Y-m-d H:i:s'),
-            'createdbty' => '1',
+            'createdby' => '1',
             'expname' => $expname,
             'isactive' => $isactive,
             'updateddate' => date('Y-m-d H:i:s'),
             'updatedby' => '1',
         ];
 
-        if ($this->ekspeditionModel->saveData($data)) {
-            return $this->response->setJSON(['status' => 'success', 'message' => 'Data berhasil disimpan', 'data' => $data]);
-        } else {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal disimpan']);
+        try {
+            if ($this->ekspeditionModel->saveData($data)) {
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'message' => 'Data berhasil disimpan',
+                    'data' => $data
+                ]);
+            }
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Data Gagal disimpan'
+            ]);
+        } catch (Exception $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
         }
     }
 

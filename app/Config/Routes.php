@@ -47,5 +47,9 @@ $routes->group('city', function ($routes) {
     $routes->Add('update/(:any)', 'City::update/$1');
 });
 $routes->group('ekspedition', function ($routes) {
-    $routes->get('', 'Ekspedition::index');
+    $routes->add('', 'Ekspedition::index');
+    $routes->add('getData', 'Ekspedition::getData');
+    $routes->add('add', 'Ekspedition::add');
+    $routes->add('edit/(:any)', 'Ekspedition::delete/$1');
+    $routes->add('update/(:any)', 'Ekspedition::update');
 });
