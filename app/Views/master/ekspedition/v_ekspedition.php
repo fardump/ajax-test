@@ -26,7 +26,9 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" id="submitBtn" class="btn btn-success">Submit</button>
+
                     </div>
+                </div>
         </form>
     </div>
 </div>
@@ -62,10 +64,10 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         loadTable();
 
-        $('#submitBtn').on('click', function (e) {
+        $('#submitBtn').on('click', function(e) {
             e.preventDefault();
             var expname = $('#expname').val();
             let isActive = $('#isActive').is(":checked") ? 1 : 0;
@@ -78,13 +80,13 @@
                     expname: expname,
                     isActive: isActive,
                 },
-                success: function (response) {
+                success: function(response) {
                     if (response.status === 'success') {
                         Swal.fire({
                             icon: 'success',
                             title: response.message,
                             showConfirmButton: true,
-                        }).then(function () {
+                        }).then(function() {
                             $('#ekspeditionModal').modal('hide');
                             $('.modal-backdrop').remove();
                             loadTable();
@@ -98,7 +100,7 @@
                         });
                     }
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     Swal.fire({
                         icon: 'error',
                         title: 'System error occurred',
@@ -108,6 +110,125 @@
                 },
             });
         });
+        // end first document
+    });
+
+    function deleteExp(expid) {
+        Swal.fire({
+            icon: 'question',
+            title: 'Yakin menghapus data ini?',
+            showConfirmButton: true,
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '<?= base_url('ekspedition/delete') ?> ',
+                    type: 'POST',
+                    data: {
+                        expid: expid
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            Swal.fire({
+                                title: 'Deleted',
+                                icon: 'success',
+                                text: 'Your file has been deleted',
+                            }).then(() => {
+                                loadTable();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: response.message
+                            });
+                        }
+                    },
+                    error: function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Terjadi kesalahan, coba lagi nanti.'
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    function updateActive(expid, isActive) {
+        $.ajax({
+            url: '<?= base_url('ekspedition/update') ?>',
+            method: 'post',
+            dataType: 'json',
+            data: {
+                expid: expid,
+                isactive: isActive
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Your data has been updated',
+                        showConfirmButton: true,
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: response.message,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function(response) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'System error occured',
+                    showConfirmButton: true,
+                });
+            }
+        })
+    }
+
+    function updateBlur(expid, newName) {
+        $.ajax({
+            url: '<?= base_url('ekspedition/update') ?>',
+            method: 'POST',
+            dataType: 'json',
+            data: {
+                expid: expid,
+                expname: newName
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Data Updated',
+                        text: 'Expedition name has been updated successfully!',
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Update Failed',
+                        text: response.message,
+                    });
+                }
+            },
+            error: function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'System Error',
+                    text: 'An error occurred while updating the data.',
+                });
+            }
+        });
+    }
+
+    $(document).on('blur', '.edit-expname', function() {
+        let expid = $(this).data('id');
+        let newName = $(this).val();
+        updateBlur(expid, newName);
     });
 
     function loadTable(orderBy = 'expid', orderDir = 'ASC') {
@@ -120,25 +241,24 @@
                 orderDir: orderDir,
             },
             dataType: 'json',
-            success: function (response) {
+            success: function(response) {
                 var tableBody = $('#tableBody');
                 tableBody.empty();
-                response.forEach(function (ekspedition, index) {
+                response.forEach(function(ekspedition, index) {
+                    var checked = ekspedition.isactive == 1 ? 'checked' : '';
                     var newRow = `
                         <tr id="row-${ekspedition.expid}"> 
                             <td>${ekspedition.expid}</td>  
-                            <td>${ekspedition.expname}</td>  
+                            <td>
+                                <input type="text" value="${ekspedition.expname}" class="form-control edit-expname" data-id="${ekspedition.expid} onblur'updateBlur()'">
+                            </td>  
                             <td>${ekspedition.createddate}</td>
                             <td>${ekspedition.updateddate}</td>
                             <td>
-                                <div class= \"form-check\">
-                                    <input class= \"form-check-input\" type=\"checkbox\" value=\"${ekspedition.isActive ? 1 : 0}\" id=\"flexCheckChecked\">
-                                    <label class=\"form-check-label\" for=\"flexCheckChecked\">
-                                    </label>
-                                </div>      
+                                <input type="checkbox" ${checked} onchange='updateActive(${ekspedition.expid}, ${ekspedition.isactive})' value='${ekspedition.isactive}' class='updateisactive' data-id='${ekspedition.isActive}' name='updateisactive' id='updateisactive'>
                               </td>
                             <td>
-                            <button class="btn btn-danger delete-btn" id="deleteBtn" data-id="${ekspedition.expid}">
+                            <button class="btn btn-danger delete-btn" onclick="deleteExp(${ekspedition.expid})" data-id="${ekspedition.expid}">
                                 <i class="bx bx-trash"></i>
                             </button>
                         </td>                  
@@ -147,62 +267,10 @@
                     tableBody.append(newRow);
                 });
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.error('AJAX error:', status, error);
             }
         });
     }
-
-
-    // function deleteExp() {
-    //     const expid = $(this).data('expid');
-    //     Swal.fire({
-    //         icon: 'question',
-    //         title: 'Yakin ingin menghapus data?',
-    //         text: 'data yang dihapus tidak dapat dikembalikan lagi',
-    //         showConfirmButton: true,
-    //         showCancelButton: true,
-    //         confirmButtonColor: rgb(189, 255, 34),
-    //     }).then(result => {
-    //         if (result.isConfirmed) {
-    //             $.ajax({
-    //                 url: '<?= base_url('ekspedition/delete') ?>',
-    //                 method: 'post',
-    //                 dataType: 'json',
-    //                 data: {
-    //                     expid: expid
-    //                 },
-    //                 success: function (response) {
-    //                     if (response.status === success) {
-    //                         Swall.fire({
-    //                             icon: 'success',
-    //                             title: 'Data Dihapus',
-    //                             showConfirmButton: true,
-    //                         });
-    //                     } else {
-    //                         Swal.fire({
-    //                             icon: 'error',
-    //                             title: 'System error occured',
-    //                             showConfirmButton: true,
-    //                         });
-    //                     }
-    //                 },
-    //                 error: function (response) {
-    //                     Swal.fire({
-    //                         icon: 'error',
-    //                         title: $e->getMessage,
-    //                         showConfirmButton: true,
-    //                     });
-    //                 },
-
-    //             });
-
-    //         } 
-    //     })
-    // }
-
-
-
-
 </script>
 <?= $this->endSection(); ?>
