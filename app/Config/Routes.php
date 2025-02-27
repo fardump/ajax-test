@@ -16,22 +16,27 @@ $routes->group('province', function ($routes) {
 });
 $routes->group('user', function ($routes) {
     $routes->get('', 'User::index');
-    $routes->add('deleteUsers', 'User::deleteUsers');
+    $routes->add('deleteUsers/(:num)', 'User::deleteUsers/$1');
     $routes->add('add', 'User::add');
+    $routes->get('loadTable', 'User::loadTable');
+    $routes->POST('update', 'User::update');
 });
 $routes->group('category', function ($routes) {
     $routes->add('', 'Category::index');
+    $routes->add('table', 'Category::table');
     $routes->add('add', 'Category::add');
-    $routes->add('edit/(:num)', 'Category::edit/$1');
-    $routes->add('update', 'Category::update');
     $routes->add('delete', 'Category::delete');
+    $routes->add('updateCheck/(:num)', 'Category::updateCheck/$1');
+    $routes->add('updateCategory/(:num)', 'Category::updateCategory/$1');
 });
+
 $routes->group('type', function ($routes) {
     $routes->get('', 'Type::index');
     $routes->post('save', 'Type::save');
-    $routes->post('delete', 'Type::delete');
+    $routes->post('delete/(:num)', 'Type::delete/$1');
+    $routes->post('update', 'Type::update');
+    $routes->get('loadTable', 'Type::loadTable');
 });
-
 $routes->group('city', function ($routes) {
     $routes->add('', 'City::index');
     $routes->add('getAll', 'City::getAll');
@@ -41,5 +46,9 @@ $routes->group('city', function ($routes) {
     $routes->Add('update/(:any)', 'City::update/$1');
 });
 $routes->group('ekspedition', function ($routes) {
-    $routes->get('', 'Ekspedition::index');
+    $routes->add('', 'Ekspedition::index');
+    $routes->add('getData', 'Ekspedition::getData');
+    $routes->add('add', 'Ekspedition::add');
+    $routes->add('edit/(:any)', 'Ekspedition::delete/$1');
+    $routes->add('update/(:any)', 'Ekspedition::update');
 });

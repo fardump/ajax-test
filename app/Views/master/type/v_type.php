@@ -1,8 +1,8 @@
 <?= $this->extend('v_sidebar') ?>
 <?= $this->section('content') ?>
-<div class="main-content content margin-t-4">
+<div class="main-content content margin-t-4 m-3">
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Add+
     </button>
 
@@ -10,12 +10,13 @@
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="type/save" method="POST">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add Type</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Type</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formadd">
+                        <input type="text" name="typeid" id="typeid" hidden>
                         <div id="typename-group" class="form-group">
                             <label for="typename">Type Name</label>
                             <input type="text" class="form-control" id="typename" name="typename"
@@ -23,19 +24,18 @@
                         </div>
                         <br>
                         <input type="checkbox" id="isactive" name="isactive" value="1" checked>
-                        <label for="isactive">Active</label><br>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <label for="isactive">Active</label>
+                        <br>
                         <button type=" submit" class="btn btn-success">Submit</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                </div>
             </div>
         </div>
     </div>
-    <div class="card p-x shadow-sm w-100">
-
-        <table class="table table-striped-columns table-hover">
+    <div class="card p-x shadow-sm w-100 m-2">
+        <table id="tableType" class="table table-sm table-hover p-3">
             <thead>
                 <tr>
                     <th>no</th>
@@ -43,95 +43,151 @@
                     <th>created date</th>
                     <th>updated date</th>
                     <th>isactive</th>
+                    <th>action</th>
                 </tr>
             </thead>
             <tbody>
-                <?php $no = 1;
-                foreach ($type as $data): ?>
-                    <tr>
-                        <th scope="row"><?= $no++ ?></th>
-                        <td><?= $data['typename'] ?></td>
-                        <td><?= $data['createddate'] ?></td>
-                        <td><?= $data['updateddate'] ?></td>
-                        <td><?= $data['isactive'] ?></td>
-                        <td>
-                            <button class="btn btn-sm btn-warning" onclick="formUpdate(<?= $data['typeid'] ?>)"
-                                data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
-                            <button class="btn btn-sm btn-danger" type="button"
-                                onclick="hapus(<?= $data['typeid'] ?>)">Delete</button>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
+                <!-- Data  !-->
             </tbody>
         </table>
     </div>
 </div>
-<?= $this->endSection(); ?>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
+        function loadTable() {
+            $.ajax({
+                url: '<?= base_url('type/loadTable') ?>',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status == 'success') {
+                        let tableBody = $('#tableType tbody');
+                        tableBody.empty();
+                        $.each(response.data, function(index, data) {
+                            let row = `
+                                <tr>
+                                    <th scope="row">${index + 1}</th>
+                                    <td>
+                                        <input type="text" class="form-control" value="${data.typename}" onblur="updateTypeName(${data.typeid}, this.value, ${data.isactive})">
+                                    </td>
+                                    <td>${data.createddate}</td>
+                                    <td>${data.updateddate}</td>
+                                    <td>
+                                        <input type="checkbox" class="form-check input" ${data.isactive == 1 ? 'checked' : ''} onchange="updateIsActive(${data.typeid}, this.checked, '${data.typename}')">
+                                    </td>
+                                    <td>
+                                        <form action="/ajax-test/type/delete/${data.typeid}" method="post" class="deleteForm d-inline">
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                `;
+                            tableBody.append(row);
+                        });
+                    } else {
+                        alert('Failed to load data');
+                    }
+                },
+                error: function() {
+                    alert('Failed to load data');
+                }
+            });
+        }
 
-        $("form").on('click', function (event) {
+        loadTable();
+
+        $("#formadd").on('submit', function(event) {
             var formData = {
                 typename: $("#typename").val(),
-                isactive: $("#isactive").val(),
+                isactive: $("#isactive").is(':checked') ? 1 : 0,
             };
 
             $.ajax({
                 type: "POST",
-                url: "type/save",
+                url: '<?= base_url('type/save') ?>',
                 data: formData,
                 dataType: "json",
                 encode: true,
-            }).done(function (data) {
-                console.log(data);
+                success: function(response) {
+                    if (response.status == 'success') {
+                        alert('Success! ' + response.message);
+                        $('#exampleModal').modal('hide');
+                        $('#formadd')[0].reset();
+                        loadTable();
+                    } else {
+                        alert('Failed! ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('Failed! An error occurred while adding.');
+                }
             });
 
             event.preventDefault();
         });
 
-        function hapus(typeid) {
+        $(document).on('submit', '.deleteForm', function(e) {
+            e.preventDefault();
+            let form = $(this);
+
+            if (confirm('Are you sure?')) {
+                $.ajax({
+                    type: 'POST',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status == 'success') {
+                            alert('Deleted! ' + response.message);
+                            loadTable();
+                        } else {
+                            alert('Failed! ' + response.message);
+                        }
+                    },
+                    error: function() {
+                        alert('Failed! An error occurred while deleting.');
+                    }
+                });
+            }
+        });
+
+        window.updateTypeName = function(typeid, typename, isactive) {
             $.ajax({
+                url: '<?= base_url('type/update') ?>',
                 type: 'POST',
-                url: 'type/delete',
-                dataType: 'json',
                 data: {
                     typeid: typeid,
+                    typename: typename,
+                    isactive: isactive ? 1 : 0
                 },
-                success: function (response) {
-                    if (response.status == 'error') {
-                        alert(response.message);
-                    } else {
-                        alert(response.message);
-                        window.location.reload();
-                    }
+                success: function(response) {
+                    console.log(response);
                 },
-                error: function (response) {
-                    alert('Data gagal dihapus');
+                error: function() {
+                    alert('Failed to update type name');
                 }
             });
         }
 
-        function formUpdate(catid) {
+        window.updateIsActive = function(typeid, isactive, typename) {
             $.ajax({
-                url: '<?= base_url('type/edit/') ?>' + typeid,
+                url: '<?= base_url('type/update') ?>',
                 type: 'POST',
-                dataType: 'json',
                 data: {
                     typeid: typeid,
+                    typename: typename,
+                    isactive: isactive ? 1 : 0
                 },
-                success: function (response) {
-                    if (response.status == 'error') {
-                        alert(response.message);
-                    } else {
-                        $('#namaupdate').val(response.data.typename);
-                        $('#editModal').modal('show');
-                    }
+                success: function(response) {
+                    console.log(response);
                 },
-                error: function (response) {
-                    alert('Data gagal diupdate');
+                error: function() {
+                    alert('Failed to update is active');
                 }
             });
         }
     });
 </script>
+<?= $this->endSection(); ?>

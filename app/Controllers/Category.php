@@ -21,23 +21,29 @@ class Category extends BaseController
     {
         $data = [
             'title' => 'Category',
-            'user' => $this->categoryModel->findAll()
+            'user' => $this->categoryModel->table()
         ];
+
         return view('master/category/v_category', $data);
+    }
+
+    public function table()
+    {
+        $data = $this->categoryModel->findAll();
+        return $this->response->setJSON($data);
     }
 
     public function add()
     {
-        
         $nama = $this->request->getPost('nama');
-        $isactive = $this->request->getPost('isactive');
+        $isactive = $this->request->getPost('isactive') ;
 
         if (empty($nama)){
             return $this->response->setJSON(['status' => 'error', 'message' => 'Nama Tidak Boleh Kosong']);
         }
 
         if (empty($isactive)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Isactive Tidak Boleh Kosong']);
+            return $this->response->setJSON(['status' => 'error', 'message' => 'isActive Tidak Boleh Kosong']);
         }
 
         $data = [
@@ -49,7 +55,7 @@ class Category extends BaseController
             'updatedby' => '1'
         ];
 
-        if ($this->categoryModel->insert($data)) {
+        if ($this->categoryModel->store($data)) {
             return $this->response->setJSON(['status' => 'success', 'message' => 'Data Berhasil Ditambahkan']);
         } else {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Ditambahkan']);
@@ -63,52 +69,41 @@ class Category extends BaseController
             return $this->response->setJSON(['status' => 'error', 'message' => 'ID Tidak Boleh Kosong']);
         }
 
-        if ($this->categoryModel->delete($id)) {
+        if ($this->categoryModel->deletecat($id)) {
             return $this->response->setJSON(['status' => 'success', 'message' => 'Data Berhasil Dihapus']);
         } else {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Dihapus']);
         }
     }
 
-    public function edit($id)
-    {
-        $data = $this->categoryModel->find($id);
-        if (empty($data)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Data Tidak Ditemukan']);
-        }
+    public function updateCategory($id){
 
-        return $this->response->setJSON(['status' => 'success', 'data' => $data]);
-    }
-
-    public function update()
-    {
-        $id = $this->request->getPost('catid');
-        $nama = $this->request->getPost('nama');
-        $isactive = $this->request->getPost('isactive');
-
-        if (empty($id)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'ID Tidak Boleh Kosong']);
-        }
-
-        if (empty($nama)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Nama Tidak Boleh Kosong']);
-        }
-
-        if (empty($isactive)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Isactive Tidak Boleh Kosong']);
-        }
+        $nama = $this->request->getPost('catname');
 
         $data = [
             'catname' => $nama,
-            'isactive' => $isactive,
-            'updateddate' => date('Y-m-d H:i:s'),
-            'updatedby' => '1'
         ];
-
-        if ($this->categoryModel->update($id, $data)) {
+        
+        if ($this->categoryModel->editname($data, $id)) {
             return $this->response->setJSON(['status' => 'success', 'message' => 'Data Berhasil Diupdate']);
         } else {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Diupdate']);
         }
     }
-}
+
+    public function updateCheck($id){
+        $isactie = $this->request->getPost('isactive');
+
+        $data = [
+            'isactive' => $isactie,
+        ];
+
+        if ($this->categoryModel->updateCheck($id, $data)) {
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Data Berhasil Diupdate']);
+        }else{
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Diupdate']);
+        }
+    }
+
+    }
+

@@ -12,7 +12,6 @@ class City extends BaseController
 {
 
     protected $cityModel;
- 
     public function __construct()
     {
         $this->db = \Config\Database::connect();
@@ -22,7 +21,7 @@ class City extends BaseController
     {
         $data = [
             'title' => 'City',
-        ];  
+        ];
         return view('master/city/v_city', $data);
     }
 
@@ -37,7 +36,7 @@ class City extends BaseController
         $cityname = $this->request->getPost('cityname');
         $isactive = $this->request->getPost('isactive');
         $this->db->transBegin();
-        try{
+        try {
             $data = [
                 'cityname' => $cityname,
                 'isactive' => $isactive,
@@ -47,7 +46,8 @@ class City extends BaseController
             $this->cityModel->store($data);
             $this->db->transCommit();
             return $this->response->setJSON(['pesan' => 'Data has been saved successfully', 'sukses' => 1, 'Data' => $data]);
-        }catch(Exception $e){
+        } catch (Exception $e) {
+            $this->db->transRollback();
             return $this->response->setJSON(['error' => $e->getMessage(), 'sukses' => 0]);
         }
     }
@@ -58,7 +58,7 @@ class City extends BaseController
         $cityname = $this->request->getPost('cityname');
         $isactive = $this->request->getPost('isactive');
         $this->db->transBegin();
-        try{
+        try {
             $data = [
                 'cityname' => $cityname,
                 'isactive' => $isactive,
@@ -68,7 +68,8 @@ class City extends BaseController
             $this->cityModel->edit($data, $cityid);
             $this->db->transCommit();
             return $this->response->setJSON(['pesan' => 'Data has been saved successfully', 'sukses' => 1,  'Data' => $data]);
-        }catch(Exception $e){
+        } catch (Exception $e) {
+            $this->db->transRollback();
             return $this->response->setJSON(['error' => $e->getMessage(), 'sukses' => 0]);
         }
     }
@@ -77,11 +78,12 @@ class City extends BaseController
     {
         $id = $this->request->getPost('id');
         $this->db->transBegin();
-        try{
+        try {
             $this->cityModel->destroy($id);
             $this->db->transCommit();
             return $this->response->setJSON(['pesan' => 'Data has been deleted successfully', 'sukses' => 1]);
-        }catch(Exception $e){
+        } catch (Exception $e) {
+            $this->db->transRollback();
             return $this->response->setJSON(['error' => $e->getMessage(), 'sukses' => 0]);
         }
     }

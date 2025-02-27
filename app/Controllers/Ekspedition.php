@@ -25,45 +25,45 @@ class Ekspedition extends BaseController
         return view('master/ekspedition/v_ekspedition', $data);
     }
 
+    public function getData()
+    {
+        return $this->response->setJSON($this->ekspeditionModel->findData());
+    }
+
     public function add()
     {
-        try {
-            $this->db->transBegin();
-            $expId = $this->request->getPost('id');
-            $expName = $this->request->getPost('expName');
-            $createdBy = $this->request->getPost('usernm');
-            $isActive = $this->request->getPost('checkboxVal');
+        $expname = $this->request->getVar('expname');
+        $isactive = $this->request->getVar('isActive');
 
-            if (empty($expId || $expName || $createdBy || $isActive)) {
-                return $this->response->setJSON([
-                    'status' => 'error',
-                    'message' => 'Invalid Required Parameter',
-                ]);
-            }
-
-            $data = [
-                'createdby' => $createdBy,
-                'expname' => $expName,
-                'isactive' => $isActive,
-            ];
-
-            $this->ekspeditionModel->addData($expId, $data);
-
-            if ($this->db->transStatus() === FALSE) {
-                $this->db->transRollback();
-                return $this->response->setJSON([
-                    'status' => 'error',
-                    'message' => 'Data Gagal Disimpan'
-                ]);
-            }
-
-            $this->db->transCommit();
+        if (empty($expname || $isactive)) {
             return $this->response->setJSON([
-                'status' => 'success',
-                'message' => 'Data Berhasil Disimpan'
+                'status' => 'error',
+                'message' => 'Invalid required parameter'
+            ]);
+        }
+
+        $data = [
+            'createddate' => date('Y-m-d H:i:s'),
+            'createdby' => '1',
+            'expname' => $expname,
+            'isactive' => $isactive,
+            'updateddate' => date('Y-m-d H:i:s'),
+            'updatedby' => '1',
+        ];
+
+        try {
+            if ($this->ekspeditionModel->saveData($data)) {
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'message' => 'Data berhasil disimpan',
+                    'data' => $data
+                ]);
+            }
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Data Gagal disimpan'
             ]);
         } catch (Exception $e) {
-            $this->db->transRollback();
             return $this->response->setJSON([
                 'status' => 'error',
                 'message' => $e->getMessage()
@@ -108,9 +108,5 @@ class Ekspedition extends BaseController
                 'message' => $e->getMessage()
             ]);
         }
-    }
-
-    public function edit() {
-        
     }
 }
