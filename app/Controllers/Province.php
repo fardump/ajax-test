@@ -91,7 +91,6 @@ class Province extends BaseController
 
     public function updateAddress($id)
     {
-        $id = $this->request->getPost('provid');
         $nama = $this->request->getPost('nama');
         $isactive = $this->request->getPost('isactive');
         try {

@@ -58,8 +58,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
-
-       
         loadprov();
 
         $('#insert').on('click', function() {
@@ -134,15 +132,16 @@
 
         $('#table-province').on('change', '.updateisactive', function() {
             let provid = $(this).data('id');
-            let isActive = $(this).is(':checked') ? 1 : 0;
+            let isactive = $(this).is(':checked') ? 1: 0;
             let nama = $(this).closest('tr').find('.nama').val();
+            let check = $(this);
 
             $.ajax({
                 url: '<?= base_url('province/updateAddress') ?>/' + provid,
                 type: 'POST',
                 data: {
                     provid: provid,
-                    isactive: isActive,
+                    isactive: isactive,
                     nama: nama
                 },
                 success: function(response) {
@@ -162,6 +161,7 @@
                         icon: "success",
                         title: response.success,
                     });
+                    check.prop('checked', isactive == 1);
                     } else {
                         const Toast = Swal.mixin({
                         toast: true,
@@ -241,6 +241,8 @@
                         title: response.success
                     });
                 }
+                var check = $(this).closest('tr').find('.updateisactive');
+                check.prop('checked', response.data.isactive == 1);
                 loadprov();
             }
         })
@@ -266,7 +268,7 @@ function loadprov() {
                                 <td>${data.createddate}</td>
                                 <td>${data.updateddate}</td>
                                 <td>
-                                    <input type="checkbox" class="form-check-input updateisactive" data-id="${data.provid}" name="updateisactive" id="updateisactive">
+                                    <input type="checkbox" class="form-check-input updateisactive" data-id="${data.provid}" name="updateisactive" id="updateisactive" ${data.isactive == 1 ? 'checked' : ''}>
                                 </td>
                                 <td>
                                     <button class="btn btn-danger hapus" id="hapus" name="hapus" type="button" onclick="hapus(${data.provid})">Hapus</button>

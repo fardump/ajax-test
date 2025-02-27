@@ -21,7 +21,7 @@ class User extends BaseController
     {
 
         $data = [
-            'title' => 'user',
+            'title' => 'User',
             'user' => $this->userModel->findAll()
         ];
         return view('master/user/v_user', $data);
