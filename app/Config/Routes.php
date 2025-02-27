@@ -13,18 +13,23 @@ $routes->group('province', function ($routes) {
     $routes->get('edit', 'Province::edit');
     $routes->post('update/(:any)', 'Province::update/$1');
     $routes->post('delete/(:any)', 'Province::delete/$1');
+    $routes->get('updatenama/(:any)', 'Province::updatenama/$1');
 });
 $routes->group('user', function ($routes) {
     $routes->get('', 'User::index');
-    $routes->add('deleteUsers', 'User::deleteUsers');
+    $routes->add('deleteUsers/(:num)', 'User::deleteUsers/$1');
     $routes->add('add', 'User::add');
+    $routes->get('loadTable', 'User::loadTable');
+    $routes->POST('update', 'User::update');
 });
 $routes->group('category', function ($routes) {
     $routes->add('', 'Category::index');
+    $routes->add('getData', 'Category::getData');
     $routes->add('add', 'Category::add');
     $routes->add('edit/(:num)', 'Category::edit/$1');
     $routes->add('update', 'Category::update');
     $routes->add('delete', 'Category::delete');
+    $routes->add('updateCategory/(:num)', 'Category::updateCategory/$1');
 });
 
 $routes->group('type', function ($routes) {
@@ -34,7 +39,6 @@ $routes->group('type', function ($routes) {
     $routes->post('update', 'Type::update');
     $routes->get('loadTable', 'Type::loadTable');
 });
-
 $routes->group('city', function ($routes) {
     $routes->add('', 'City::index');
     $routes->add('getAll', 'City::getAll');

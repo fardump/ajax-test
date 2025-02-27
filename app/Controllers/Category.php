@@ -26,20 +26,19 @@ class Category extends BaseController
         return view('master/category/v_category', $data);
     }
 
+    public function getData()
+    {
+        $data = $this->categoryModel->findAll();
+        return $this->response->setJSON($data);
+    }
+
     public function add()
     {
-        
         $nama = $this->request->getPost('nama');
-        $isactive = $this->request->getPost('isactive');
-
+        $isactive = $this->request->getPost('isactive') ;
         if (empty($nama)){
             return $this->response->setJSON(['status' => 'error', 'message' => 'Nama Tidak Boleh Kosong']);
         }
-
-        if (empty($isactive)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Isactive Tidak Boleh Kosong']);
-        }
-
         $data = [
             'catname' => $nama,
             'isactive' => $isactive,
@@ -53,20 +52,6 @@ class Category extends BaseController
             return $this->response->setJSON(['status' => 'success', 'message' => 'Data Berhasil Ditambahkan']);
         } else {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Ditambahkan']);
-        }
-    }
-
-    public function delete()
-    {
-        $id = $this->request->getPost('id');
-        if (empty($id)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'ID Tidak Boleh Kosong']);
-        }
-
-        if ($this->categoryModel->delete($id)) {
-            return $this->response->setJSON(['status' => 'success', 'message' => 'Data Berhasil Dihapus']);
-        } else {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Dihapus']);
         }
     }
 
@@ -84,7 +69,7 @@ class Category extends BaseController
     {
         $id = $this->request->getPost('catid');
         $nama = $this->request->getPost('nama');
-        $isactive = $this->request->getPost('isactive');
+        $isactive = $this->request->getPost('isactive') ;
 
         if (empty($id)) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'ID Tidak Boleh Kosong']);
@@ -111,4 +96,34 @@ class Category extends BaseController
             return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Diupdate']);
         }
     }
-}
+
+    public function delete()
+    {
+        $id = $this->request->getPost('id');
+        if (empty($id)) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'ID Tidak Boleh Kosong']);
+        }
+
+        if ($this->categoryModel->delete($id)) {
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Data Berhasil Dihapus']);
+        } else {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Dihapus']);
+        }
+    }
+
+    public function updateCategory($id){
+
+        $nama = $this->request->getPost('catname');
+
+        $data = [
+            'catname' => $nama,
+        ];
+        
+        if ($this->categoryModel->update($id, $data)) {
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Data Berhasil Diupdate']);
+        } else {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Diupdate']);
+        }
+    }
+    }
+
