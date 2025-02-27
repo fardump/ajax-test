@@ -44,9 +44,9 @@ class Province extends BaseController
             return $this->response->setJSON(['success' => 'success', 'message' => 'Nama Tidak Boleh Kosong']);
         }
 
-        if (empty($isactive)) {
-            return $this->response->setJSON(['success' => 'error', 'message' => 'Isactive Tidak Boleh Kosong']);
-        }
+        // if (empty($isactive)) {
+        //     return $this->response->setJSON(['success' => 'error', 'message' => 'Isactive Tidak Boleh Kosong']);
+        // }
 
         $data = [
             'provname' => $nama,

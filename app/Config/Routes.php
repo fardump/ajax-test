@@ -49,6 +49,6 @@ $routes->group('ekspedition', function ($routes) {
     $routes->add('', 'Ekspedition::index');
     $routes->add('getData', 'Ekspedition::getData');
     $routes->add('add', 'Ekspedition::add');
-    $routes->add('edit/(:any)', 'Ekspedition::delete/$1');
-    $routes->add('update/(:any)', 'Ekspedition::update');
+    $routes->add('delete', 'Ekspedition::deleteExp');
+    $routes->add('update/', 'Ekspedition::update');
 });
