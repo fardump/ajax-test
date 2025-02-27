@@ -12,4 +12,6 @@ class Mcategory extends Model
     protected $useTimestamps = false;
 }
 
+    
+
 ?>

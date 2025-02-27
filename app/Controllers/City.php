@@ -12,7 +12,6 @@ class City extends BaseController
 {
 
     protected $cityModel;
- 
     public function __construct()
     {
         $this->db = \Config\Database::connect();
