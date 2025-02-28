@@ -124,7 +124,6 @@
                     alert('Failed! An error occurred while adding.');
                 }
             });
-
             event.preventDefault();
         });
 
@@ -151,6 +150,7 @@
                     }
                 });
             }
+            loadTable();
         });
 
         window.updateTypeName = function(typeid, typename, isactive) {
@@ -163,7 +163,8 @@
                     isactive: isactive ? 1 : 0
                 },
                 success: function(response) {
-                    console.log(response);
+                    alert(response.message);
+                    loadTable();
                 },
                 error: function() {
                     alert('Failed to update type name');
@@ -181,7 +182,8 @@
                     isactive: isactive ? 1 : 0
                 },
                 success: function(response) {
-                    console.log(response);
+                    alert(response.message);
+                    loadTable();
                 },
                 error: function() {
                     alert('Failed to update is active');
