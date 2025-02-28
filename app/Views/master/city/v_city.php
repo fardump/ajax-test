@@ -67,23 +67,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        $(document).ready(function() {
-            $('#add').on('click', function() {
-                $('#cityModal').modal('show');
-            });
+        function loadTable() {
+            $.ajax({
+                url: '<?= base_url('city/getAll') ?>',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    let tbody = $('#table-city tbody');
+                    tbody.empty();
 
-            function loadTable() {
-                $.ajax({
-                    url: '<?= base_url('city/getAll') ?>',
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(response) {
-                        let tbody = $('#table-city tbody');
-                        tbody.empty();
-
-                        response.data.forEach(function(city, no) {
-                            let isChecked = city.isactive == 1 ? 'checked' : '';
-                            let row = `
+                    response.data.forEach(function(city, no) {
+                        let isChecked = city.isactive == 1 ? 'checked' : '';
+                        let row = `
                                     <tr>
                                         <td class="text-center">${no + 1}</td>
                                         <td>
@@ -97,14 +92,19 @@
                                         </td>
                                     </tr>
                                     `;
-                            tbody.append(row);
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            }
+                        tbody.append(row);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+        $(document).ready(function() {
+            $('#add').on('click', function() {
+                $('#cityModal').modal('show');
+            });
+
 
             loadTable();
 
@@ -137,7 +137,6 @@
                                 confirmButtonText: 'OK'
                             });
                         }
-                        loadTable();
                     },
                     error: function(xhr, status, error) {
                         console.error(error);
@@ -180,7 +179,6 @@
                                 confirmButtonText: 'OK'
                             });
                         }
-                        loadTable();
                     },
                     error: function(xhr, status, error) {
                         console.error(error);
@@ -240,7 +238,6 @@
                             }
                         });
                     }
-                    loadTable();
                 });
             });
 
@@ -265,11 +262,8 @@
                                 text: res.pesan,
                                 icon: 'success',
                                 confirmButtonText: 'OK'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    tbl.ajax.reload();
-                                }
                             });
+                            $('#cityForm')[0].reset();
                         } else {
                             Swal.fire({
                                 title: 'Notification',
@@ -281,7 +275,6 @@
                         loadTable();
                     }
                 })
-                loadTable();
             });
         });
     </script>
