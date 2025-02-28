@@ -53,7 +53,6 @@
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     $(document).ready(function() {
@@ -71,7 +70,7 @@
                                 <tr>
                                     <th scope="row">${index + 1}</th>
                                     <td>
-                                        <input type="text" class="form-control" value="${data.typename}" onblur="updateTypeName(${data.typeid}, this.value, ${data.isactive == 1 ? 'checked' : ''})">
+                                        <input type="text" class="form-control" value="${data.typename}" onblur="updateTypeName(${data.typeid}, this.value, '${data.isactive  == 1 ? 'checked' : ''}')">
                                     </td>
                                     <td>${data.createddate}</td>
                                     <td>${data.updateddate}</td>
