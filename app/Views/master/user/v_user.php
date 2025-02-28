@@ -83,8 +83,8 @@
                                     <input type="checkbox" class="form-check input" ${data.isactive == 1 ? 'checked' : ''} onchange="updateisactive(${data.userid}, this.checked, '${data.username}')">
                                 </td>
                                 <td>
-                                <form action="/ajax-test/user/deleteUsers/${data.userid}" method="post" class="deleteForm d-inline">
-                                <button  type="submit" class = "btn btn-sm btn-danger">Delete</button>
+                                    <form action="/ajax-test/user/deleteUsers/${data.userid}" method="post" class="deleteForm d-inline">
+                                    <button  type="submit" class = "btn btn-sm btn-danger">Delete</button>
                                 </td>
                                 </tr>
                             `;

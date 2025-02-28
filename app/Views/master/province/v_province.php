@@ -89,11 +89,10 @@
                         Toast.fire({
                             icon: 'success',
                             title: response.message,
-                        }).then(() => {
-                            $('#exampleModal').modal('hide');
-                            $('.modal-backdrop').remove();
-                            $('body').removeClass('modal-open');
-                        });
+                        })
+                        $('#exampleModal').modal('hide');
+                        $('.modal-backdrop').remove();
+                        $('body').removeClass('modal-open');
                     } else {
                         const Toast = Swal.mixin({
                             toast: true,
@@ -109,11 +108,9 @@
                         Toast.fire({
                             icon: "error",
                             title: response.message
-                        }).then(() => {
-                            $('#exampleModal').modal('show');
                         })
+                        $('#exampleModal').modal('show');
                     }
-                    $('body').removeClass('modal-open');
                     loadprov();
                 },
                 error: function(response) {
