@@ -22,7 +22,7 @@
                             <div class="mb-3">
                                 <label for="" class="form-label">Active</label>
                                 <div class="form-check">
-                                <input type="hidden" name="isactive" value="0" />
+                                    <input type="hidden" name="isactive" value="0" />
                                     <input class="form-check-input" type="checkbox" value="1" name="isactiveadd" id="isaactiveadd">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Active
@@ -33,47 +33,6 @@
                     <button type="submit" id="saveButton" class="btn btn-primary saveButton mb-2 ms-2" style="max-width: 180px;">Save changes</button>
                 </div>
                 </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Edit User -->
-
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Form Edit</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="userid" id="userid">
-                    <form id="formUpdate">
-                        <div class="mb-3">
-                            <label for="usernameupdate" class="form-label">Username</label>
-                            <input type="email" class="form-control" id="usernameupdate" placeholder="Enter User Name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="" class="form-label">Active</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" name="isactiveupdate" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    Is Active
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" name="isactiveupdate" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    Active
-                                </label>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="saveupdate">Save changes</button>
-                </div>
             </div>
         </div>
     </div>
@@ -142,87 +101,6 @@
         }
 
         loadTable();
-
-        function deleteUser(userid) {
-            $.ajax({
-                type: 'POST',
-                url: '<?= base_url('user/deleteUsers') ?>',
-                dataType: 'json',
-                data: {
-                    id: userid
-                },
-                success: function(response) {
-                    if (response.status == 'success') {
-                        alert(response.message)
-                        loadTable();
-                    } else {
-                        alert(response.message)
-                    }
-                }
-            })
-
-            $('#formAdd').on('submit', function(e) {
-                e.preventDefault();
-                let username = $('#username').val();
-                let isactive = $('input[name="isactiveadd"]:checked').val();
-
-                $.ajax({
-                    type: 'POST',
-                    url: '<?= base_url('user/add') ?>',
-                    dataType: 'json',
-                    data: {
-                        username: username,
-                        isactive: isactive
-
-                    },
-                    success: function(response) {
-                        if (response.status == 'success') {
-                            alert(response.message)
-                            location.reload()
-                        } else {
-                            alert(response.message)
-                        }
-                    },
-                    error: function() {
-                        alert('Data Gagal Ditambahkan')
-                    }
-                });
-            });
-
-
-            $('#saveupdate').on('click', function(e) {
-                e.preventDefault();
-
-                let username = $('$usernameupdate').val();
-                let isactive = $('input[name="isactiveupdate"]:checked').val();
-
-                $.ajax({
-                    type: 'POST',
-                    url: '<?= base_url('user/update') ?>',
-                    dataType: 'json',
-                    data: {
-                        username: username,
-                        isactive: isactive
-
-                    },
-                    success: function(response) {
-                        if (response.status == 'success') {
-                            alert(response.message)
-                            location.reload()
-                        } else {
-                            alert(response.message)
-                        }
-                    },
-                    error: function() {
-                        alert('Data Gagal Diupdate')
-                    }
-                });
-            });
-
-            function loadTable() {
-
-            }
-        }
 
         $('#addUserForm').on('submit', function(e) {
             e.preventDefault();
@@ -342,7 +220,3 @@
     });
 </script>
 <?= $this->endSection(); ?>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    //ajax disini ya ges
-</script>
