@@ -44,6 +44,9 @@ $routes->group('city', function ($routes) {
     $routes->Add('add', 'City::add');
     $routes->Add('delete/(:any)', 'City::delete/$1');
     $routes->Add('update/(:any)', 'City::update/$1');
+    $routes->Add('uploadImage', 'City::uploadImage');
+    $routes->Add('uploadChunk', 'City::uploadChunk');
+    $routes->Add('deleteImage/(:any)', 'City::deleteImage/$1');
 });
 $routes->group('ekspedition', function ($routes) {
     $routes->add('', 'Ekspedition::index');
