@@ -12,48 +12,64 @@ class Category extends BaseController
 {
 
     protected $categoryModel;
+
     public function __construct()
     {
         $this->db = \Config\Database::connect();
         $this->categoryModel = new Mcategory();
     }
+
     public function index()
     {
         $data = [
             'title' => 'Category',
-            'user' => $this->categoryModel->table()
         ];
 
         return view('master/category/v_category', $data);
     }
 
     public function table()
-    {
-        $data = $this->categoryModel->findAll();
-        return $this->response->setJSON($data);
-    }
+{
+    $page = $this->request->getVar('page') ?? 1;
+
+    $data = $this->categoryModel->getPaginatedData(5); 
+    $pager = $this->categoryModel->pager->makeLinks($page, 5, $this->categoryModel->countAllResults(), 'category_pagination');
+
+    return $this->response->setJSON([
+        'data' => $data,
+        'pager' => $pager,
+    ]);
+}
+
+
 
     public function add()
     {
         $nama = $this->request->getPost('nama');
         $isactive = $this->request->getPost('isactive') ? 1 : 0;
 
-        if (empty($nama)){
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Nama Tidak Boleh Kosong']);
-        }
+        $this->db->transbegin();
 
-        $data = [
-            'catname' => $nama,
-            'isactive' => $isactive,
-            'createddate' => date('Y-m-d H:i:s'),
-            'createdby' => '1',
-            'updateddate' => date('Y-m-d H:i:s'),
-            'updatedby' => '1'
-        ];
+        try {
 
-        if ($this->categoryModel->store($data)) {
+            if (empty($nama)) {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Nama Tidak Boleh Kosong']);
+            }
+
+            $data = [
+                'catname' => $nama,
+                'isactive' => $isactive,
+                'createddate' => date('Y-m-d H:i:s'),
+                'createdby' => '1',
+                'updateddate' => date('Y-m-d H:i:s'),
+                'updatedby' => '1'
+            ];
+
+            $this->categoryModel->store($data);
+            $this->db->transcommit();
             return $this->response->setJSON(['status' => 'success', 'message' => 'Data Berhasil Ditambahkan']);
-        } else {
+        } catch (\Throwable $th) {
+            $this->db->transrollback();
             return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Ditambahkan']);
         }
     }
@@ -61,45 +77,63 @@ class Category extends BaseController
     public function delete()
     {
         $id = $this->request->getPost('id');
-        if (empty($id)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'ID Tidak Boleh Kosong']);
-        }
 
-        if ($this->categoryModel->deletecat($id)) {
+        $this->db->transbegin();
+
+        try {
+            $this->categoryModel->delete($id);
+            $this->db->transcommit();
             return $this->response->setJSON(['status' => 'success', 'message' => 'Data Berhasil Dihapus']);
-        } else {
+        } catch (\Throwable $th) {
+            $this->db->transrollback();
             return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Dihapus']);
         }
     }
 
-    public function updateCategory($id){
+    public function updateCategory($id)
+    {
 
         $nama = $this->request->getPost('catname');
 
-        $data = [
-            'catname' => $nama,
-        ];
-        
-        if ($this->categoryModel->editname($data, $id)) {
+        $this->db->transbegin();
+
+        try {
+
+            if (empty($nama)) {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Nama Tidak Boleh Kosong']);
+            };
+
+            $data = [
+                'catname' => $nama
+            ];
+
+            $this->categoryModel->editname($data, $id);
+            $this->db->transcommit();
             return $this->response->setJSON(['status' => 'success', 'message' => 'Data Berhasil Diupdate']);
-        } else {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Diupdate']);
+        } catch (\Throwable $th) {
+            $this->db->transrollback();
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal DiUpdate']);
         }
     }
 
-    public function updateCheck($id){
+    public function updateCheck($id)
+    {
         $isactie = $this->request->getPost('isactive');
 
-        $data = [
-            'isactive' => $isactie,
-        ];
+        $this->db->transBegin();
 
-        if ($this->categoryModel->updateCheck($id, $data)) {
+        try {
+
+            $data = [
+                'isactive' => $isactie,
+            ];
+
+            $this->categoryModel->updateCheck($id, $data);
+            $this->db->transCommit();
             return $this->response->setJSON(['status' => 'success', 'message' => 'Data Berhasil Diupdate']);
-        }else{
+        } catch (\Throwable $th) {
+            $this->db->transRollback();
             return $this->response->setJSON(['status' => 'error', 'message' => 'Data Gagal Diupdate']);
         }
     }
-
-    }
-
+}

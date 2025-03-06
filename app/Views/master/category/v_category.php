@@ -20,12 +20,10 @@
                                 <input type="text" class="form-control" name="nama" id="nama" placeholder="Enter Category Name">
                             </div>
                             <div class="mb-3">
-                               
-                                    <input class="form-check-input" type="checkbox" value="1" id="isactiveinsert" name="isactiveinsert">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        Active
-                                    </label>
-                                
+                                <input class="form-check-input" type="checkbox" value="1" id="isactiveinsert" name="isactiveinsert">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Active
+                                </label>
                             </div>
                         </form>
                     </div>
@@ -54,49 +52,68 @@
                 <tbody>
                 </tbody>
             </table>
+            <div class="ms-2" id="pagination_link"></div>
         </div>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    // function selectone(checkbox) {
+    //     const checkboxes = document.querySelectorAll('input[name="isactiveinsert"]');
+    //     checkboxes.forEach((cb) => {
+    //         if (cb !== checkbox) {
+    //             cb.checked = false;
+    //         }
+    //     });
+    // }
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+    });
 
-    function selectone(checkbox) {
-        const checkboxes = document.querySelectorAll('input[name="isactiveinsert"]');
-        checkboxes.forEach((cb) => {
-            if (cb !== checkbox) {
-                cb.checked = false;
-            }
-        });
-    }
-
-    function loadTable() {
+    function loadTable(page = 1) {
         $.ajax({
             url: '<?= base_url('category/table') ?>',
             type: 'GET',
+            data: {
+                page: page
+            },
             success: function(response) {
                 let html = '';
-                let no = 1;
-                response.forEach(result => {
+                let no = (page - 1) * 5 + 1;
+
+                response.data.forEach(result => {
                     html += `<tr>
-                        <td>${no++}</td>
-                        <td><input class="form-control catname" name="catname" type="text" id="catname${result.catid}" value="${result.catname}" data-id="${result.catid}"></td>
-                        <td>${result.createddate}</td>
-                        <td>${result.updateddate}</td>
+                    <td>${no++}</td>
+                    <td><input class="form-control catname" name="catname" type="text" id="catname${result.catid}" value="${result.catname}" data-id="${result.catid}"></td>
+                    <td>${result.createddate}</td>
+                    <td>${result.updateddate}</td>
+                    <td><div class="form-check">
+                            <input class="form-check-input checkcat" type="checkbox" name="checkcat" id="checkcat${result.catid}" value="1" data-id="${result.catid}" ${result.isactive == 1 ? 'checked' : ''}>
+                        </div></td>
                         <td>
-                        <div class="form-check">
-                                <input class="form-check-input checkcat" type="checkbox" name="checkcat" id="checkcat${result.catid}" value="1" data-id="${result.catid}" ${result.isactive == 1 ? 'checked' : '' }>
-                            </div></td>
-                        <td>
-                            <button class="btn btn-sm btn-danger" id="hapus" onclick="hapus(${result.catid})">Delete</button>
-                        </td>
-                    </tr>`;
+                        <button class="btn btn-sm btn-danger" onclick="hapus(${result.catid})">Delete</button>
+                    </td>
+                </tr>`;
                 });
+
                 $('#table tbody').html(html);
+                $('#pagination_link').html(response.pager);
+
+                $('#pagination_link a').on('click', function(e) {
+                    e.preventDefault();
+                    const nextPage = $(this).data('ci-pagination-page');
+                    if (nextPage) {
+                        loadTable(nextPage);
+                    }
+                });
             },
-            error: function(response) {
-                alert('Data gagal ditampilkan');
+            error: function() {
+                alert('Gagal memuat data.');
             }
         });
     }
@@ -106,6 +123,7 @@
     });
 
     $(document).on('blur', '.catname', function() {
+        z
         let catid = $(this).data('id');
         let catname = $(this).val();
         $.ajax({
@@ -172,7 +190,6 @@
     })
 
     $('#insert').on('click', function() {
-
         let nama = $('#nama').val();
         let isactive = $('input[name="isactiveinsert"]:checked').val();
 
@@ -209,13 +226,6 @@
     });
 
     function hapus(catid) {
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: "btn btn-success",
-                cancelButton: "btn btn-danger"
-            },
-            buttonsStyling: false
-        });
         swalWithBootstrapButtons.fire({
             title: "Konfirmasi",
             text: "Apakah Anda Yakin Akan Hapus Data!",
