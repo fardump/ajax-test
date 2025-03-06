@@ -11,33 +11,25 @@ class Mcategory extends Model
     protected $allowedFields = ['catname', 'createddate', 'createdby', 'updateddate', 'updatedby', 'isactive'];
     protected $useTimestamps = false;
 
-    public function table()
-    {
+    public function table(){
         return $this->findAll();
     }
 
-    public function getPaginatedData($perPage)
-    {
-        return $this->orderBy('createddate', 'DESC') ->paginate($perPage);
-    }
-
-    public function store($data)
-    {
+    public function store($data){
         return $this->insert($data);
     }
 
-    public function editname($data, $id)
-    {
+    public function editname($data, $id){
         return $this->update($id, $data);
     }
 
-    public function deletecat($id)
-    {
+    public function deletecat($id){
         return $this->delete($id);
     }
 
-    public function updateCheck($catid, $data)
-    {
+    public function updateCheck($catid, $data){
         return $this->update($catid, $data);
     }
+
 }
+?>
