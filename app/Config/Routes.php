@@ -13,6 +13,7 @@ $routes->group('province', function ($routes) {
     $routes->add('add', 'Province::add');
     $routes->add('delete/(:any)', 'Province::delete/$1');
     $routes->add('updateAddress/(:any)', 'Province::updateAddress/$1');
+    $routes->add('fpdf', 'Province::fpdf');
 });
 $routes->group('user', function ($routes) {
     $routes->get('', 'User::index');
@@ -20,6 +21,7 @@ $routes->group('user', function ($routes) {
     $routes->add('add', 'User::add');
     $routes->get('loadTable', 'User::loadTable');
     $routes->POST('update', 'User::update');
+    $routes->add('exportPDF', 'User::exportPDF');
 });
 $routes->group('category', function ($routes) {
     $routes->add('', 'Category::index');
