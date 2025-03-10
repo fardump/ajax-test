@@ -173,7 +173,7 @@ Manager Mutu', 1, 'C');
         $pdf->Cell(30, 5, 'Nama Pemohon', 0, 0, 'L');
         $pdf->Cell(5, 5, ': ', 0, 0, 'L');
         $pdf->Cell(30, 5, ' Firman ', 0, 1, '');
-        $pdf->Cell(30, 5, 'Telp', 0, 0, 'L');
+        $pdf->Cell(30, 5, 'Telp', 0, 0, 'L');   
         $pdf->Cell(5, 5, ': ', 0, 0, 'L');
         $pdf->Cell(30, 5, '081338577270 ', 0, 1, '');
         $pdf->Cell(30, 5, 'Alamat', 0, 0, 'L');

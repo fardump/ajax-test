@@ -196,9 +196,9 @@ New Data', 1 , 'L');
         
         $pdf->setFont('Arial', '', 10);
         $pdf->Ln(5);
-        $pdf->Cell(0, 5, 'Jakarta, 10 Maret 2025', 0, 1);
-        $pdf->Cell(0, 5, 'Diterima oleh,', 0, 1);
-        $pdf->SetY(146);
+        $pdf->MultiCell(0, 5, 'Jakarta, 10 Maret 2025 
+        Diterima oleh,', 0);
+        $pdf->SetY(145);
         $pdf->Image('public/image/ttd.png',  $pdf->GetX(), $pdf->GetY() - 5, 23);
         $pdf->Ln(10);
         $pdf->Cell(0, 5, 'DIAN MEDIANA', 0, 1);
