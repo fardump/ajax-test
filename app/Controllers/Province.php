@@ -113,9 +113,7 @@ class Province extends BaseController
         $pdf = new PDF_MC_Table();
         $pdf->AddPage();
         $pdf->cell(38, 25, '', 1, 0);
-        $pdf->SetY(16);
-        $pdf->SetX(16);
-        $pdf->Image('public/image/logo.jpg', $pdf->GetX(), $pdf->GetY() - 5, 23);
+        $pdf->Image('public/image/logo.jpg', 18, 10.4, -210);
         $pdf->SetY(10);
         $pdf->SetX(48);
         $pdf->SetFont('arial', 'B', 11);
@@ -133,9 +131,7 @@ class Province extends BaseController
         $pdf->SetFont('arial', '', 10);
         $pdf->Cell(28, 6.25, '001', 1, 0);
         $pdf->Cell(24, 12.45, '', 1, 0);
-        $pdf->SetY(23);
-        $pdf->SetX(176.5);
-        $pdf->Image('public/image/image.png',  $pdf->GetX(), $pdf->GetY() - 5, 23);
+        $pdf->Image('public/image/image.png', 177, 18, 22);
         $pdf->SetY(22.45);
         $pdf->SetX(128);
         $pdf->SetFont('arial', '', 8);
@@ -145,8 +141,9 @@ class Province extends BaseController
         $pdf->SetX(128);
         $pdf->SetFont('arial', '', 9);
         $pdf->Cell(20, 6.25, 'Halaman', 1, 0);
-        $pdf->SetFont('arial', '', 7);
+        $pdf->SetFont('arial', '', 10);
         $pdf->Cell(28, 6.25, '1', 1, 0);
+        $pdf->SetFont('arial', '', 7.5);
         $pdf->Cell(24, 6.25, 'Winna Octavia P. ', 1, 1, 'R');
         $pdf->Ln(3);
         $pdf->SetFont('arial', 'B', 12);
@@ -189,7 +186,7 @@ New Data', 1 , 'L');
         $pdf->SetFont('arial', 'B', '8');
         $pdf->Row($header);
         $pdf->SetFont('arial', '', '8');
-        $pdf->SetAligns(array('C', 'L', 'L', 'C', 'C', 'C', 'C'));
+        $pdf->SetAligns(array('C', 'L', 'L', 'C', 'L', 'L', 'C'));
         foreach ($rows as $row) {
             $pdf->Row($row);
         };
@@ -198,9 +195,10 @@ New Data', 1 , 'L');
         $pdf->Ln(5);
         $pdf->MultiCell(0, 5, 'Jakarta, 10 Maret 2025 
         Diterima oleh,', 0);
-        $pdf->SetY(145);
-        $pdf->Image('public/image/ttd.png',  $pdf->GetX(), $pdf->GetY() - 5, 23);
+        $pdf->SetY(147);
+        $pdf->Image('public/image/ttd.png', 12, 139, 28);
         $pdf->Ln(10);
+        $pdf->SetX(15);
         $pdf->Cell(0, 5, 'DIAN MEDIANA', 0, 1);
         $pdf->Output('I', 'mycompanyAhcmad.pdf');
         exit;
