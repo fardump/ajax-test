@@ -12,7 +12,10 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "codeigniter4/framework": "^4.0",
+<<<<<<< HEAD
         "enyo/dropzone": "^5.9",
+=======
+>>>>>>> 70b97284e1c7bb76c0988d57fcf72d8c5e3d3e8d
         "fpdf/fpdf": "^1.86",
         "m1/env": "^2.2",
         "oscarotero/env": "^2.1",

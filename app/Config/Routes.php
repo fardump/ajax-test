@@ -30,6 +30,8 @@ $routes->group('category', function ($routes) {
     $routes->add('delete', 'Category::delete');
     $routes->add('updateCheck/(:num)', 'Category::updateCheck/$1');
     $routes->add('updateCategory/(:num)', 'Category::updateCategory/$1');
+    $routes->add('search', 'Category::search');
+    $routes->add('print', 'Category::print');
 });
 
 $routes->group('type', function ($routes) {
@@ -56,4 +58,5 @@ $routes->group('ekspedition', function ($routes) {
     $routes->add('add', 'Ekspedition::add');
     $routes->add('delete', 'Ekspedition::deleteExp');
     $routes->add('update/', 'Ekspedition::update');
+    $routes->add('export', 'Ekspedition::export');
 });

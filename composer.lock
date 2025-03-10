@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "bf07c3cfb7a790838114005919e6eba5",
+=======
+    "content-hash": "a512d2827d3d29c664241324fe41929a",
+>>>>>>> 70b97284e1c7bb76c0988d57fcf72d8c5e3d3e8d
     "packages": [
         {
             "name": "codeigniter4/framework",
@@ -82,44 +86,57 @@
             "time": "2024-04-07T02:46:05+00:00"
         },
         {
-            "name": "enyo/dropzone",
-            "version": "v5.9.3",
+            "name": "fpdf/fpdf",
+            "version": "1.86.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/dropzone/dropzone-packagist.git",
-                "reference": "286b2dc1f1195bd12169e4c9d5f91cfbe46e245f"
+                "url": "https://github.com/coreydoughty/Fpdf.git",
+                "reference": "d2a0cbd9e4b5557b9c6c29ddc8eb2b36d8761e00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dropzone/dropzone-packagist/zipball/286b2dc1f1195bd12169e4c9d5f91cfbe46e245f",
-                "reference": "286b2dc1f1195bd12169e4c9d5f91cfbe46e245f",
+                "url": "https://api.github.com/repos/coreydoughty/Fpdf/zipball/d2a0cbd9e4b5557b9c6c29ddc8eb2b36d8761e00",
+                "reference": "d2a0cbd9e4b5557b9c6c29ddc8eb2b36d8761e00",
                 "shasum": ""
             },
+            "require": {
+                "php": ">=5.6.0"
+            },
             "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "FPDF": "Fpdf\\Fpdf"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Fpdf\\": "src/Fpdf"
+                }
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
-                    "name": "Matias Meno",
-                    "email": "m@tias.me",
-                    "homepage": "http://www.yesmeno.com"
+                    "name": "Corey Doughty",
+                    "email": "corey@doughty.ca"
                 }
             ],
-            "description": "Handles drag and drop of files for you.",
-            "homepage": "http://www.dropzonejs.com",
+            "description": "FPDF Composer Wrapper",
+            "homepage": "https://github.com/coreydoughty/Fpdf",
             "keywords": [
-                "drag and drop",
-                "dragndrop",
-                "file upload",
-                "upload"
+                "fpdf",
+                "pdf",
+                "wrapper"
             ],
             "support": {
-                "issues": "https://github.com/dropzone/dropzone-packagist/issues",
-                "source": "https://github.com/dropzone/dropzone-packagist/tree/v5.9.3"
+                "issues": "https://github.com/coreydoughty/Fpdf/issues",
+                "source": "https://github.com/coreydoughty/Fpdf/tree/1.86.0"
             },
-            "time": "2021-09-21T17:03:36+00:00"
+            "time": "2023-07-04T16:41:45+00:00"
         },
         {
             "name": "fpdf/fpdf",
