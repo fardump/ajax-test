@@ -12,8 +12,10 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "codeigniter4/framework": "^4.0",
+        "fpdf/fpdf": "^1.86",
         "m1/env": "^2.2",
-        "oscarotero/env": "^2.1"
+        "oscarotero/env": "^2.1",
+        "setasign/fpdf": "^1.8"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9",
