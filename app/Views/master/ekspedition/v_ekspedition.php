@@ -21,6 +21,9 @@
                                     value="1" chekced>
                                 <span>IsActive</span>
                             </div>
+                            <div class="dropzone needsclick">
+
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -39,6 +42,9 @@
             data-bs-target="#ekspeditionModal" style="margin-left: 4px; margin-bottom: 4px;">
             <i class="bx bx-plus-circle margin-r-2"></i>Tambah
         </button>
+        <a href="<?= base_url('ekspedition/export')?>" class="btn btn-warning" id="btnexport">
+            <i class="bx bxs-printer"></i>Export
+        </a>
     </div>
     <table class="table table-stripped-columns table-hover">
         <thead class="thead-dark">
@@ -64,10 +70,10 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         loadTable();
 
-        $('#submitBtn').on('click', function(e) {
+        $('#submitBtn').on('click', function (e) {
             e.preventDefault();
             var expname = $('#expname').val();
             let isActive = $('#isActive').is(":checked") ? 1 : 0;
@@ -80,13 +86,13 @@
                     expname: expname,
                     isActive: isActive,
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response.status === 'success') {
                         Swal.fire({
                             icon: 'success',
                             title: response.message,
                             showConfirmButton: true,
-                        }).then(function() {
+                        }).then(function () {
                             $('#ekspeditionModal').modal('hide');
                             $('.modal-backdrop').remove();
                             loadTable();
@@ -100,7 +106,7 @@
                         });
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     Swal.fire({
                         icon: 'error',
                         title: 'System error occurred',
@@ -128,7 +134,7 @@
                         expid: expid
                     },
                     dataType: 'json',
-                    success: function(response) {
+                    success: function (response) {
                         if (response.status === 'success') {
                             Swal.fire({
                                 title: 'Deleted',
@@ -145,7 +151,7 @@
                             });
                         }
                     },
-                    error: function() {
+                    error: function () {
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
@@ -166,7 +172,7 @@
                 expid: expid,
                 isactive: isActive
             },
-            success: function(response) {
+            success: function (response) {
                 if (response.status === 'success') {
                     Swal.fire({
                         icon: 'success',
@@ -181,7 +187,7 @@
                     });
                 }
             },
-            error: function(response) {
+            error: function (response) {
                 Swal.fire({
                     icon: 'error',
                     title: 'System error occured',
@@ -200,7 +206,7 @@
                 expid: expid,
                 expname: newName
             },
-            success: function(response) {
+            success: function (response) {
                 if (response.status === 'success') {
                     Swal.fire({
                         icon: 'success',
@@ -215,7 +221,7 @@
                     });
                 }
             },
-            error: function() {
+            error: function () {
                 Swal.fire({
                     icon: 'error',
                     title: 'System Error',
@@ -225,7 +231,7 @@
         });
     }
 
-    $(document).on('blur', '.edit-expname', function() {
+    $(document).on('blur', '.edit-expname', function () {
         let expid = $(this).data('id');
         let newName = $(this).val();
         updateBlur(expid, newName);
@@ -241,10 +247,10 @@
                 orderDir: orderDir,
             },
             dataType: 'json',
-            success: function(response) {
+            success: function (response) {
                 var tableBody = $('#tableBody');
                 tableBody.empty();
-                response.forEach(function(ekspedition, index) {
+                response.forEach(function (ekspedition, index) {
                     var checked = ekspedition.isactive == 1 ? 'checked' : '';
                     var newRow = `
                         <tr id="row-${ekspedition.expid}"> 
@@ -267,10 +273,14 @@
                     tableBody.append(newRow);
                 });
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('AJAX error:', status, error);
             }
         });
+    }
+
+    function exportDocument() {
+        window.location.href = '<?= base_url('ekspedition/export') ?>';
     }
 </script>
 <?= $this->endSection(); ?>

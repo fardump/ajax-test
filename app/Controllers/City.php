@@ -3,11 +3,8 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\Controller\database;
-use App\Models;
 use App\Models\Mcity;
 use Exception;
-use PhpParser\Node\Expr\Empty_;
 
 class City extends BaseController
 {
@@ -28,8 +25,13 @@ class City extends BaseController
 
     public function getAll()
     {
-        $data = $this->cityModel->datatable()->get()->getResultArray();
-        return $this->response->setJSON(['data' => $data]);
+        $page = $this->request->getGet('page') ?? 1;
+        $fromdate = $this->request->getGet('fromdate');
+        $todate = $this->request->getGet('todate');
+        $search = $this->request->getGet('search');
+        $perPage = 10;
+        $data = $this->cityModel->datatable($perPage, $page, $fromdate, $todate, $search);
+        return $this->response->setJSON($data);
     }
 
     public function add()
@@ -38,8 +40,8 @@ class City extends BaseController
         $isactive = $this->request->getPost('isactive');
         $this->db->transBegin();
         try {
-            if(empty($cityname)){
-                return $this->response->setJSON(['pesan' => 'Data city dibutuhkan', 'sukses' => 0]);    
+            if (empty($cityname)) {
+                return $this->response->setJSON(['pesan' => 'Data city dibutuhkan', 'sukses' => 0]);
             }
             $data = [
                 'cityname' => $cityname,
@@ -83,12 +85,93 @@ class City extends BaseController
         $id = $this->request->getPost('id');
         $this->db->transBegin();
         try {
+            $urlname = $this->cityModel->getImageUrl($id);
+            if (!empty($urlname->image)) {
+                unlink(WRITEPATH . 'uploads/' . $urlname->image);
+            }
             $this->cityModel->destroy($id);
             $this->db->transCommit();
             return $this->response->setJSON(['pesan' => 'Data has been deleted successfully', 'sukses' => 1]);
         } catch (Exception $e) {
             $this->db->transRollback();
             return $this->response->setJSON(['error' => $e->getMessage(), 'sukses' => 0]);
+        }
+    }
+
+    public function deleteImage($id)
+    {
+        $id = $this->request->getPost('id');
+        $this->db->transBegin();
+        try {
+            $urlname = $this->cityModel->getImageUrl($id);
+            if (!empty($urlname->image)) {
+                unlink(WRITEPATH . 'uploads/' . $urlname->image);
+            }
+            $data = [
+                'image' => null,
+                'updateddate' => date('Y-m-d H:i:s'),
+                'updatedby' => 2,
+            ];
+            $this->cityModel->edit($data, $id);
+            $this->db->transCommit();
+            return $this->response->setJSON(['pesan' => 'Data has been deleted successfully', 'sukses' => 1]);
+        } catch (Exception $e) {
+            $this->db->transRollback();
+            return $this->response->setJSON(['error' => $e->getMessage(), 'sukses' => 0]);
+        }
+    }
+
+    // public function uploadImage()
+    // {
+    //     $file = $this->request->getFile('file');
+    //     $id = $this->request->getPost('id');
+    //     $this->db->transBegin();
+    //     try {
+    //         $newName = $file->getName();
+    //         $file->move('writable/uploads', $newName);
+    //         $data = [
+    //             'image' => $newName,
+    //             'updateddate' => date('Y-m-d H:i:s'),
+    //             'updatedby' => 2,
+    //         ];
+    //         $this->cityModel->edit($data, $id);
+    //         $this->db->transCommit();
+    //         return $this->response->setJSON(['pesan' => 'Data has been saved successfully', 'sukses' => 1]);
+    //     } catch (Exception $e) {
+    //         $this->db->transRollback();
+    //         return $this->response->setJSON(['error' => $e->getMessage(), 'sukses' => 0]);
+    //     }
+    // }
+
+    public function uploadChunk()
+    {
+        $id = $this->request->getPost('id');
+        $file = $this->request->getFile('file');
+        $this->db->transBegin();
+        try {
+
+            if (!$file->isValid()) {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid file']);
+            }
+            $urlname = $this->cityModel->getImageUrl($id);
+            if (!empty($urlname->image)) {
+                unlink(WRITEPATH . 'uploads/' . $urlname->image);
+            }
+
+            $fileName = $file->getRandomName();
+            $file->move(WRITEPATH . 'uploads/', $fileName);
+
+            $data = [
+                'image' => $fileName,
+                'updateddate' => date('Y-m-d H:i:s'),
+                'updatedby' => 2,
+            ];
+            $this->cityModel->edit($data, $id);
+            $this->db->transCommit();
+            return $this->response->setJSON(['status' => 'success', 'file' => $fileName]);
+        } catch (Exception $e) {
+            $this->db->transRollback();
+            return $this->response->setJSON(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
 }

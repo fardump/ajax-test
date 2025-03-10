@@ -13,5 +13,6 @@
     integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
     crossorigin="anonymous" />
   <link rel="stylesheet" href="public/css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css">
   <title><?= $title ?></title>
 </head>
