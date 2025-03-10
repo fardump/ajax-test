@@ -54,4 +54,5 @@ $routes->group('ekspedition', function ($routes) {
     $routes->add('add', 'Ekspedition::add');
     $routes->add('delete', 'Ekspedition::deleteExp');
     $routes->add('update/', 'Ekspedition::update');
+    $routes->add('export', 'Ekspedition::export');
 });
