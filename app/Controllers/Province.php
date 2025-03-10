@@ -115,7 +115,7 @@ class Province extends BaseController
         $pdf->cell(38, 25, '', 1, 0);
         $pdf->SetY(16);
         $pdf->SetX(16);
-        $pdf->Image('public/img/logo.jpg', $pdf->GetX(), $pdf->GetY() - 5, 23);
+        $pdf->Image('public/image/logo.jpg', $pdf->GetX(), $pdf->GetY() - 5, 23);
         $pdf->SetY(10);
         $pdf->SetX(48);
         $pdf->SetFont('arial', 'B', 11);
@@ -135,7 +135,7 @@ class Province extends BaseController
         $pdf->Cell(26, 12.45, '', 1, 0);
         $pdf->SetY(23);
         $pdf->SetX(179);
-        $pdf->Image('public/img/ttd.png',  $pdf->GetX(), $pdf->GetY() - 5, 23);
+        $pdf->Image('public/image/image.png',  $pdf->GetX(), $pdf->GetY() - 5, 23);
         $pdf->SetY(22.45);
         $pdf->SetX(128);
         $pdf->SetFont('arial', '', 8);
@@ -203,7 +203,7 @@ class Province extends BaseController
         $pdf->Cell(0, 5, 'Jakarta, 10 Maret 2025', 0, 1);
         $pdf->Cell(0, 5, 'Diterima oleh,', 0, 1);
         $pdf->SetY(146);
-        $pdf->Image('public/img/ttd2.png',  $pdf->GetX(), $pdf->GetY() - 5, 23);
+        $pdf->Image('public/image/ttd.png',  $pdf->GetX(), $pdf->GetY() - 5, 23);
         $pdf->Ln(10);
         $pdf->Cell(0, 5, 'DIAN MEDIANA', 0, 1);
         $pdf->Output('I', 'mycompanyAhcmad.pdf');
