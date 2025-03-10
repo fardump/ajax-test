@@ -233,7 +233,7 @@ New Data', 1, 'L');
         $pdf->Ln(20);
         $pdf->Cell(20, 5, 'DIAN MEDIANA', 0, 1, 'L');
         
-        $pdf->Output('D', 'Print_Data.pdf');
+        $pdf->Output();
         exit;
     }
 }
