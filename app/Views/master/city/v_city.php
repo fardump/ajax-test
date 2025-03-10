@@ -246,6 +246,8 @@
                     return;
                 }
 
+                let startNumber = (page - 1) * response.per_page;
+
                 response.data.forEach(function(city, no) {
                     let isChecked = city.isactive == 1 ? 'checked' : '';
                     let imageUrl = "<?= base_url('writable/uploads/') ?>" + city.image;
@@ -253,7 +255,7 @@
 
                     let row = `
                             <tr>
-                                <td class="text-center">${no + 1}</td>
+                                <td class="text-center">${startNumber + no + 1}</td>
                                 <td>
                                     <input type="text" value='${city.cityname}' class='updatecity' data-id='${city.cityid}' name='updatecity' id='updatecity'>
                                 </td>
