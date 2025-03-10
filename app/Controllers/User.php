@@ -7,6 +7,7 @@ use CodeIgniter\Controller\database;
 use App\Models;
 use App\Models\Muser;
 use Fpdf\Fpdf;
+use App\Libraries\PDF_MC_Table;
 
 
 use Exception;
@@ -105,7 +106,7 @@ class User extends BaseController
     {
 
         // Buat objek PDF
-        $pdf = new FPDF();
+        $pdf = new PDF_MC_TABLE();
         $pdf->AddPage();
         $pdf->SetFont('Arial', '', 10);
 
@@ -119,7 +120,7 @@ class User extends BaseController
         $pdf->SetFont('Arial', '', 6);
         $pdf->Cell(20, 5, 'Dokumen', 1, 0, 'L');
 
-        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetFont('Arial', '', 8);
         $pdf->Cell(25, 5, '04.1-FRM-MKT', 1, 0, 'L');
 
         $pdf->SetFont('Arial', '', 6);
@@ -131,7 +132,7 @@ Manager Mutu', 1, 'C');
         $pdf->setX(125);
         $pdf->Cell(20, 5, 'Revisi', 1, 0, 'L');
 
-        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetFont('Arial', '', 8);
         $pdf->Cell(25, 5, '001', 1, 0, 'L');
 
         $pdf->SetFont('Arial', '', 6);
@@ -142,7 +143,7 @@ Manager Mutu', 1, 'C');
         $pdf->setX(125);
         $pdf->Cell(20, 5, 'Tanggal Terbit', 1, 0, 'L');
 
-        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetFont('Arial', '', 8);
         $pdf->Cell(25, 5, '12 October 2022', 1, 1, 'L');
 
         // $pdf->Cell(30, 5, '', 1, 1, 'C');
@@ -152,7 +153,7 @@ Manager Mutu', 1, 'C');
         $pdf->Cell(20, 5, 'Halaman', 1, 0, 'L');
 
 
-        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetFont('Arial', '', 8);
         $pdf->Cell(25, 5, '1', 1, 0, 'L');
 
         $pdf->SetFont('Arial', '', 8);
@@ -163,17 +164,18 @@ Manager Mutu', 1, 'C');
         $pdf->SetFont('Arial', 'B', 12);
         $pdf->Cell(0, 10, 'Laporan Keluhan Pelanggan', 0, 0, 'C');
         $pdf->Ln(17);
-        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetFont('Arial', '', 9);
         $pdf->Cell(30, 5, 'No Keluhan', 0, 0, 'L');
         $pdf->Cell(5, 5, ':', 0, 0, 'L');
-        $pdf->Cell(30, 5, '085/MKT-EMINDO/III/2025 ', 0, 1, '');
+        $pdf->Cell(30, 5, '085/MKT-EMIINDO/III/2025 ', 0, 1, '');
         $pdf->Cell(30, 5, 'Nama Customer', 0, 0, 'L');
         $pdf->Cell(5, 5, ': ', 0, 0, 'L');
         $pdf->Cell(30, 5, 'RUMAH SAKIT UMUM DAERAH KRAMAT JATI ', 0, 1, '');
         $pdf->Cell(30, 5, 'Nama Pemohon', 0, 0, 'L');
         $pdf->Cell(5, 5, ': ', 0, 0, 'L');
-        $pdf->Cell(30, 5, ' Firman ', 0, 1, '');
-        $pdf->Cell(30, 5, 'Telp', 0, 0, 'L');   
+        $pdf->Cell(30, 5, 'Firman ', 0, 1, '');
+        $pdf->Cell(30, 5, 'Telp', 0, 0, 'L');
+
         $pdf->Cell(5, 5, ': ', 0, 0, 'L');
         $pdf->Cell(30, 5, '081338577270 ', 0, 1, '');
         $pdf->Cell(30, 5, 'Alamat', 0, 0, 'L');
@@ -221,16 +223,6 @@ New Data', 1, 'L');
         $pdf->setY(150);
         $pdf->SetFont('Arial', '', 10);
         $pdf->Cell(47, 4, 'DIAN MEDIANA', 0, 1, 'C');
-
-
-
-
-
-
-
-
-
-
 
         $pdf->Output();
         exit();
