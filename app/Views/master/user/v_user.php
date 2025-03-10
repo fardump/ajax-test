@@ -2,6 +2,10 @@
 <?= $this->section('content') ?>
 <div class="card ms-3 me-3 my-3">
 
+    <a href="<?= base_url('user/exportPDF') ?>" class="btn btn-primary d-flex align-items-center">
+        <i class="bx bx-export me-2"></i>
+        <span class="fw-normal fs-7">Export PDF</span>
+    </a>
     <div class="card-header">
         <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">Tambah User</button>
 
