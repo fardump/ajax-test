@@ -70,10 +70,9 @@
         loadTable();
 
         $('#ekspeditionModal').on('hidden.bs.modal', function () {
-            $('#inputForm')[0].reset();
-            $('body').removeClass('modal-open');
             document.body.style.overflow = 'visible';
             document.body.style.paddingRight = '0';
+            $('#isActive').prop('checked', false);
         });
 
         $('#submitBtn').on('click', function (e) {
@@ -98,6 +97,7 @@
                         }).then(() => {
                             $('#inputForm')[0].reset();
                             $('#ekspeditionModal').modal('hide');
+                            $('#isActive').prop('checked', false);
                             document.body.style.overflow = 'visible';
                             document.body.style.paddingRight = '0';
                             $('body').removeClass('modal-open');
