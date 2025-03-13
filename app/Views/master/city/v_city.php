@@ -399,7 +399,7 @@
             $('#uploadModal').modal('show');
         });
 
-        let chunkSize = 2 * 1024 * 1024;
+        let chunkSize = 5 * 1024 * 1024; 
 
         let myDropzone = new Dropzone("#uploadForm", {
             url: "<?= base_url('city/uploadChunk') ?>",
@@ -423,20 +423,13 @@
                 this.on("addedfile", function(file) {
                     let progressElement = Dropzone.createElement('<div class="dz-progress"><span class="dz-upload"></span></div>');
                     file.previewElement.appendChild(progressElement);
-                    if(file.type.startsWith('image')) {
-                        $('#uploadData').attr('disabled', true);
-                        $("#uploadData").html('<i class="bx bx-loader bx-spin"></i>');
-                    }else{
-                        $('#uploadData').attr('disabled', false);
-                        $("#uploadData").html(real_html);
-                    }
+                    $('#uploadData').attr('disabled', true).html('<i class="bx bx-loader bx-spin"></i>');
                 });
 
                 this.on("thumbnail", function(file) {
                     $('#uploadData').attr('disabled', false);
                     $("#uploadData").html(real_html);
                 });
-
 
                 this.on("removedfile", function(file) {
                     if (dzInstance.getQueuedFiles().length === 0) {
@@ -452,19 +445,22 @@
                     e.preventDefault();
                     $('#uploadData').attr('disabled', true);
                     $('.btn-close').attr('disabled', true);
+                    $('#uploadData').attr('disabled', true).html('<i class="bx bx-loader bx-spin"></i>');
                     if (dzInstance.getQueuedFiles().length > 0) {
                         dzInstance.getQueuedFiles().forEach(file => {
-                            let reader = new FileReader();
-                            reader.readAsArrayBuffer(file);
-                            reader.onload = function(event) {
-                                let blob = new Blob([event.target.result], {
-                                    type: file.type
-                                });
+                            let totalChunks = Math.ceil(file.size / chunkSize);
+                            let chunkIndex = 0;
+
+                            function uploadChunk(start) {
+                                let end = Math.min(start + chunkSize, file.size);
+                                let chunk = file.slice(start, end);
                                 let formData = new FormData();
-                                formData.append("file", blob, file.name);
                                 formData.append("id", cityid);
-                                let real_html = $('#uploadData').html();
-                                $("#uploadData").html('<i class="bx bx-loader bx-spin"></i>');
+                                formData.append("file", chunk, file.name);
+                                formData.append("chunkIndex", chunkIndex);
+                                formData.append("totalChunks", totalChunks);
+                                formData.append("fileName", file.name);
+
                                 $.ajax({
                                     url: "<?= base_url('city/uploadChunk') ?>",
                                     type: "POST",
@@ -472,10 +468,14 @@
                                     contentType: false,
                                     processData: false,
                                     success: function(response) {
-                                        setTimeout(() => {
-                                            Swal.fire({
+                                        chunkIndex++;
+                                        if (end < file.size) {
+                                            uploadChunk(end);
+                                        } else {
+                                            setTimeout(() => {
+                                                Swal.fire({
                                                 title: 'Success!',
-                                                text: 'Files have been uploaded successfully.',
+                                                text: 'File has been uploaded successfully.',
                                                 icon: 'success',
                                                 confirmButtonText: 'OK'
                                             });
@@ -485,7 +485,8 @@
                                             $('.btn-close').attr('disabled', false);
                                             dzInstance.removeAllFiles();
                                             loadTable();
-                                        }, 1300);
+                                            }, 1300);
+                                        }
                                     },
                                     error: function() {
                                         Swal.fire({
@@ -498,7 +499,8 @@
                                         $('#uploadData').attr('disabled', false);
                                     }
                                 });
-                            };
+                            }
+                            uploadChunk(0);
                         });
                     } else {
                         Swal.fire({
@@ -511,30 +513,6 @@
                         $('#uploadData').attr('disabled', false);
                     }
                 });
-
-                // this.on("queuecomplete", function() {
-                //     setTimeout(() => {
-                //         Swal.fire({
-                //             title: 'Success!',
-                //             text: 'All files have been uploaded successfully.',
-                //             icon: 'success',
-                //             confirmButtonText: 'OK'
-                //         });
-                //         $('#uploadModal').modal('hide');
-                //         $('#uploadData').attr('disabled', false);
-                //         dzInstance.removeAllFiles();
-                //         loadTable();
-                //     }, 1000);
-                // });
-
-                // this.on("errormultiple", function(files, response) {
-                //     Swal.fire({
-                //         title: 'Error!',
-                //         text: response.pesan,
-                //         icon: 'error',
-                //         confirmButtonText: 'OK'
-                //     });
-                // });
             }
         });
 

@@ -146,32 +146,54 @@ class City extends BaseController
     public function uploadChunk()
     {
         $id = $this->request->getPost('id');
-        $file = $this->request->getFile('file');
-        $this->db->transBegin();
-        try {
+        $fileName = $this->request->getPost('fileName');
+        $totalChunks = (int) $this->request->getPost('totalChunks');
+        $chunkIndex = (int) $this->request->getPost('chunkIndex'); 
+        $chunkData = $this->request->getFile('file');
 
-            if (!$file->isValid()) {
-                return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid file']);
+        if (!$chunkData->isValid()) {
+            return $this->response->setJSON(['status' => 'error', 'pesan' => 'Chunk upload failed']);
+        }
+
+        $uploadPath = WRITEPATH . 'uploads/'; 
+        if (!is_dir($uploadPath)) {
+            mkdir($uploadPath, 0777, true);
+        }
+
+        $oldimage = $this->cityModel->getImageUrl($id);
+        if (!empty($oldimage->image)) {
+            unlink(WRITEPATH . 'uploads/' . $oldimage->image);
+        }
+
+        $chunkPath = $uploadPath . $fileName . '_chunk_' . $chunkIndex;
+
+        $chunkData->move($uploadPath, $fileName . '_chunk_' . $chunkIndex);
+
+        $uploadedChunks = glob($uploadPath . $fileName . '_chunk_*');
+
+        if (count($uploadedChunks) == $totalChunks) {
+            $finalFilePath = $uploadPath . $fileName;
+            $finalFile = fopen($finalFilePath, 'wb');
+
+            for ($i = 0; $i < $totalChunks; $i++) {
+                $chunkFile = $uploadPath . $fileName . '_chunk_' . $i;
+
+                if (file_exists($chunkFile)) {
+                    $chunkContent = file_get_contents($chunkFile);
+                    fwrite($finalFile, $chunkContent);
+                    unlink($chunkFile); 
+                }
             }
-            $urlname = $this->cityModel->getImageUrl($id);
-            if (!empty($urlname->image)) {
-                unlink(WRITEPATH . 'uploads/' . $urlname->image);
-            }
 
-            $fileName = $file->getRandomName();
-            $file->move(WRITEPATH . 'uploads/', $fileName);
-
+            fclose($finalFile);
             $data = [
                 'image' => $fileName,
                 'updateddate' => date('Y-m-d H:i:s'),
                 'updatedby' => 2,
             ];
             $this->cityModel->edit($data, $id);
-            $this->db->transCommit();
-            return $this->response->setJSON(['status' => 'success', 'file' => $fileName]);
-        } catch (Exception $e) {
-            $this->db->transRollback();
-            return $this->response->setJSON(['status' => 'error', 'message' => $e->getMessage()]);
         }
+
+        return $this->response->setJSON(['status' => 'progress', 'pesan' => 'Chunk uploaded successfully']);
     }
 }
