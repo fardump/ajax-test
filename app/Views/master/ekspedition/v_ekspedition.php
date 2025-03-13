@@ -69,6 +69,14 @@
     $(document).ready(function () {
         loadTable();
 
+        $('#ekspeditionModal').on('hidden.bs.modal', function () {
+            $('#inputForm')[0].reset();
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+            document.body.style.overflow = 'visible';
+            document.body.style.paddingRight = '0';
+        });
+
         $('#submitBtn').on('click', function (e) {
             e.preventDefault();
             var expname = $('#expname').val();
@@ -88,13 +96,15 @@
                             icon: 'success',
                             title: response.message,
                             showConfirmButton: true,
-                        });
-                        $('#inputForm')[0].reset();
-                        $('#expname').val('');
-                        $('#isActive').prop('checked', false);
-                        $('#ekspeditionModal').modal('hide');
-                        $('.modal-backdrop').remove();
-                        loadTable();
+                        }).then(() => {
+                            $('#inputForm')[0].reset();
+                            $('#ekspeditionModal').modal('hide');
+                            document.body.style.overflow = 'visible';
+                            document.body.style.paddingRight = '0';
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                            loadTable();
+                        })
                     } else {
                         Swal.fire({
                             icon: 'error',
