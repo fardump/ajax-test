@@ -405,7 +405,7 @@
             url: "<?= base_url('city/uploadChunk') ?>",
             autoProcessQueue: false,
             maxFiles: 10,
-            acceptedFiles: "image/*",
+            acceptedFiles: null,
             dictDefaultMessage: "Drop files here or click to upload",
             chunking: true,
             maxThumbnailFilesize: 35,
@@ -423,14 +423,20 @@
                 this.on("addedfile", function(file) {
                     let progressElement = Dropzone.createElement('<div class="dz-progress"><span class="dz-upload"></span></div>');
                     file.previewElement.appendChild(progressElement);
-                    $('#uploadData').attr('disabled', true);
-                    $("#uploadData").html('<i class="bx bx-loader bx-spin"></i>');
+                    if(file.type.startsWith('image')) {
+                        $('#uploadData').attr('disabled', true);
+                        $("#uploadData").html('<i class="bx bx-loader bx-spin"></i>');
+                    }else{
+                        $('#uploadData').attr('disabled', false);
+                        $("#uploadData").html(real_html);
+                    }
                 });
 
                 this.on("thumbnail", function(file) {
                     $('#uploadData').attr('disabled', false);
                     $("#uploadData").html(real_html);
                 });
+
 
                 this.on("removedfile", function(file) {
                     if (dzInstance.getQueuedFiles().length === 0) {
