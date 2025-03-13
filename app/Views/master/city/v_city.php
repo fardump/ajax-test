@@ -495,6 +495,7 @@
                                             icon: 'error',
                                             confirmButtonText: 'OK'
                                         });
+                                        $('.btn-close').attr('disabled', false);
                                         $("#uploadData").html(real_html);
                                         $('#uploadData').attr('disabled', false);
                                     }

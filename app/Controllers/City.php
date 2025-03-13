@@ -148,14 +148,14 @@ class City extends BaseController
         $id = $this->request->getPost('id');
         $fileName = $this->request->getPost('fileName');
         $totalChunks = (int) $this->request->getPost('totalChunks');
-        $chunkIndex = (int) $this->request->getPost('chunkIndex'); 
+        $chunkIndex = (int) $this->request->getPost('chunkIndex');
         $chunkData = $this->request->getFile('file');
 
         if (!$chunkData->isValid()) {
             return $this->response->setJSON(['status' => 'error', 'pesan' => 'Chunk upload failed']);
         }
 
-        $uploadPath = WRITEPATH . 'uploads/'; 
+        $uploadPath = WRITEPATH . 'uploads/';
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0777, true);
         }
@@ -165,14 +165,13 @@ class City extends BaseController
             unlink(WRITEPATH . 'uploads/' . $oldimage->image);
         }
 
-        $chunkPath = $uploadPath . $fileName . '_chunk_' . $chunkIndex;
-
         $chunkData->move($uploadPath, $fileName . '_chunk_' . $chunkIndex);
 
         $uploadedChunks = glob($uploadPath . $fileName . '_chunk_*');
 
         if (count($uploadedChunks) == $totalChunks) {
-            $finalFilePath = $uploadPath . $fileName;
+            $uniqueFileName = uniqid() . '_' . $fileName;
+            $finalFilePath = $uploadPath . $uniqueFileName;
             $finalFile = fopen($finalFilePath, 'wb');
 
             for ($i = 0; $i < $totalChunks; $i++) {
@@ -181,13 +180,13 @@ class City extends BaseController
                 if (file_exists($chunkFile)) {
                     $chunkContent = file_get_contents($chunkFile);
                     fwrite($finalFile, $chunkContent);
-                    unlink($chunkFile); 
+                    unlink($chunkFile);
                 }
             }
 
             fclose($finalFile);
             $data = [
-                'image' => $fileName,
+                'image' => $uniqueFileName,
                 'updateddate' => date('Y-m-d H:i:s'),
                 'updatedby' => 2,
             ];
